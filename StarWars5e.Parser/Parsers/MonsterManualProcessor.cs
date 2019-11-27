@@ -21,19 +21,45 @@ namespace StarWars5e.Parser.Parsers
             {
                 if (!lines[i].StartsWith("> ## ")) continue;
 
-                var monsterEndIndex = lines.FindIndex(i, f => f == string.Empty || f == "___");
-                var monsterLines = lines.Skip(i).Take(monsterEndIndex - i).CleanListOfStrings().ToList();
+                var statBlockEndIndex = lines.FindIndex(i, f => f == string.Empty || f == "___");
+                var statBlockLines = lines.Skip(i).Take(statBlockEndIndex - i).CleanListOfStrings().ToList();
 
+                var monster = ParseStatBlock(statBlockLines);
 
-                monsters.Add(ParseMonster(monsterLines));
+                var flavorLines = new List<string>();
+                var bigFlavorSectionIndex = lines.FindLastIndex(i, f => f.StartsWith("## "));
+                if (bigFlavorSectionIndex != -1)
+                {
+                    var bigFlavorSectionEndIndex = lines.FindIndex(bigFlavorSectionIndex + 1,
+                        f => f.StartsWith("_") || f.StartsWith(">") || f.StartsWith("#"));
+
+                    var bigFlavorList = lines.Skip(bigFlavorSectionIndex)
+                        .Take(bigFlavorSectionEndIndex - bigFlavorSectionIndex).CleanListOfStrings();
+                    flavorLines.AddRange(bigFlavorList);
+                }
+
+                var monsterSpeciesName = monster.Name.Split(",")[0];
+                var littleFlavorSectionIndex = lines.FindLastIndex(i, f => f.StartsWith($"### {monsterSpeciesName}"));
+                if (littleFlavorSectionIndex != -1)
+                {
+                    var littleFlavorSectionEndIndex = lines.FindIndex(littleFlavorSectionIndex + 1,
+                        f => f.StartsWith("_") || f.StartsWith(">") || f.StartsWith("#"));
+
+                    var littleFlavorList = lines.Skip(littleFlavorSectionIndex)
+                        .Take(littleFlavorSectionEndIndex - littleFlavorSectionIndex).CleanListOfStrings();
+                    flavorLines.AddRange(littleFlavorList);
+                }
+
+                monster.FlavorText = flavorLines.Any() ? string.Join("", flavorLines) : null;
+                monsters.Add(monster);
             }
 
             return Task.FromResult(monsters);
         }
 
-        private static Monster ParseMonster(List<string> monsterLines)
+        private static Monster ParseStatBlock(List<string> statBlockLines)
         {
-            var name = monsterLines.Find(f => f.StartsWith("> ## ")).Split("## ")[1].Trim().RemoveMarkdownCharacters();
+            var name = statBlockLines.Find(f => f.StartsWith("> ## ")).Split("## ")[1].Trim().RemoveMarkdownCharacters();
             try
             {
                 var monster = new Monster
@@ -44,7 +70,7 @@ namespace StarWars5e.Parser.Parsers
                     Name = name
                 };
 
-                var typeLine = monsterLines.Find(f => f.StartsWith(">*") || f.StartsWith("> *")).RemoveMarkdownCharacters().Trim().Split(',');
+                var typeLine = statBlockLines.Find(f => f.StartsWith(">*") || f.StartsWith("> *")).RemoveMarkdownCharacters().Trim().Split(',');
 
                 monster.SizeEnum =
                     Enum.Parse<MonsterSize>(typeLine[0].RemoveMarkdownCharacters().Trim().Split(' ')[0], true);
@@ -57,22 +83,20 @@ namespace StarWars5e.Parser.Parsers
 
                 monster.Alignment = typeLine[1].Trim().RemoveMarkdownCharacters();
                 monster.ArmorClass = int.Parse(Regex
-                    .Match(monsterLines.Find(f => f.Contains("**Armor Class**")), @"\d+").Value);
-                var armorTypeSplit = monsterLines.Find(f => f.Contains("**Armor Class**")).Split('(', ')');
+                    .Match(statBlockLines.Find(f => f.Contains("**Armor Class**")), @"\d+").Value);
+                var armorTypeSplit = statBlockLines.Find(f => f.Contains("**Armor Class**")).Split('(', ')');
                 if (armorTypeSplit.ElementAtOrDefault(1) != null)
                 {
-                    monster.ArmorType = monsterLines.Find(f => f.Contains("**Armor Class**")).Split('(', ')')[1];
+                    monster.ArmorType = statBlockLines.Find(f => f.Contains("**Armor Class**")).Split('(', ')')[1];
                 }
 
                 monster.HitPoints = int.Parse(Regex
-                    .Match(monsterLines.Find(f => f.Contains("**Hit Points**")), @"\d+").Value);
-                monster.HitPointRoll = monsterLines.Find(f => f.Contains("**Hit Points**")).Split('(', ')')[1];
-                monster.Speed = int.Parse(Regex
-                    .Match(monsterLines.Find(f => f.Contains("**Speed**")), @"\d+").Value);
-                monster.Speeds = monsterLines.Find(f => f.Contains("**Speed**")).Split("**")[2].Trim();
+                    .Match(statBlockLines.Find(f => f.Contains("**Hit Points**")), @"\d+").Value);
+                monster.HitPointRoll = statBlockLines.Find(f => f.Contains("**Hit Points**")).Split('(', ')')[1];
+                monster.Speeds = statBlockLines.Find(f => f.Contains("**Speed**")).Split("**")[2].Trim();
 
                 var attributeLine =
-                    monsterLines[monsterLines.FindIndex(f => f.Contains("|STR|DEX|CON|INT|WIS|CHA|")) + 2];
+                    statBlockLines[statBlockLines.FindIndex(f => f.Contains("|STR|DEX|CON|INT|WIS|CHA|")) + 2];
                 var attributeNumbers = Regex.Matches(attributeLine, @"-?\d+");
                 monster.Strength = int.Parse(attributeNumbers[0].ToString());
                 monster.StrengthModifier = int.Parse(attributeNumbers[1].ToString());
@@ -88,13 +112,13 @@ namespace StarWars5e.Parser.Parsers
                 monster.CharismaModifier = int.Parse(attributeNumbers[11].ToString());
 
                 monster.SavingThrows =
-                    monsterLines.Find(f => f.Contains("**Saving Throws**"))?.Split("**Saving Throws**")[1]
+                    statBlockLines.Find(f => f.Contains("**Saving Throws**"))?.Split("**Saving Throws**")[1]
                         .Split(',').Select(s => s.Trim()).ToList();
-                monster.Skills = monsterLines.Find(f => f.Contains("**Skills**"))?.Split("**Skills**")[1]
+                monster.Skills = statBlockLines.Find(f => f.Contains("**Skills**"))?.Split("**Skills**")[1]
                     .Split(',')
                     .Select(s => s.Trim()).ToList();
 
-                var damageVulnerabilitiesLine = monsterLines.Find(f => f.Contains("**Damage Vulnerabilities**",
+                var damageVulnerabilitiesLine = statBlockLines.Find(f => f.Contains("**Damage Vulnerabilities**",
                     StringComparison.InvariantCultureIgnoreCase));
 
                 if (damageVulnerabilitiesLine != null)
@@ -113,7 +137,7 @@ namespace StarWars5e.Parser.Parsers
                         : null;
                 }
 
-                var damageImmunitiesSplit = monsterLines.Find(f => f.Contains("**Damage Immunities**"))?
+                var damageImmunitiesSplit = statBlockLines.Find(f => f.Contains("**Damage Immunities**"))?
                     .Split("**Damage Immunities**")[1].Split(',').Select(s => s.Trim()).ToList();
                 if (damageImmunitiesSplit != null)
                 {
@@ -127,7 +151,7 @@ namespace StarWars5e.Parser.Parsers
                         : null;
                 }
 
-                var damageResistancesSplit = monsterLines.Find(f => f.Contains("**Damage Resistances**"))?
+                var damageResistancesSplit = statBlockLines.Find(f => f.Contains("**Damage Resistances**"))?
                     .Split("**Damage Resistances**")[1].Split(',').Select(s => s.Trim()).ToList();
                 if (damageResistancesSplit != null)
                 {
@@ -141,7 +165,7 @@ namespace StarWars5e.Parser.Parsers
                         : null;
                 }
 
-                var conditionImmunitiesSplit = monsterLines.Find(f => f.Contains("**Condition Immunities**"))?
+                var conditionImmunitiesSplit = statBlockLines.Find(f => f.Contains("**Condition Immunities**"))?
                     .Split("**Condition Immunities**")[1].Split(',').Select(s => s.Trim()).ToList();
                 if (conditionImmunitiesSplit != null)
                 {
@@ -155,13 +179,13 @@ namespace StarWars5e.Parser.Parsers
                         : null;
                 }
 
-                monster.Senses = monsterLines.Find(f => f.Contains("**Senses**"))?
+                monster.Senses = statBlockLines.Find(f => f.Contains("**Senses**"))?
                     .Split("**Senses**")[1].Split(',').Select(s => s.Trim()).ToList();
-                monster.Languages = monsterLines.Find(f => f.Contains("**Languages**"))?
+                monster.Languages = statBlockLines.Find(f => f.Contains("**Languages**"))?
                     .Split("**Languages**")[1].Split(new[] {",", "and"}, StringSplitOptions.RemoveEmptyEntries)
                     .Select(s => s.Trim()).ToList();
 
-                var challengeLine = monsterLines.Find(f => f.Contains("**Challenge**"));
+                var challengeLine = statBlockLines.Find(f => f.Contains("**Challenge**"));
                 var challengeRatingSplit = challengeLine
                     .Substring(challengeLine.LastIndexOf("**", StringComparison.InvariantCultureIgnoreCase)).Split(' ');
                 //var challengeRatingNumbers = Regex.Matches(monsterLines.Find(f => f.Contains("**Challenge**")), @"[0-9]+(,[0-9]+)*");
@@ -170,57 +194,57 @@ namespace StarWars5e.Parser.Parsers
                     NumberStyles.AllowThousands);
 
                 monster.Behaviors = new List<MonsterBehavior>();
-                var lastUnderScoreLine = monsterLines.FindLastIndex(f => f.Contains("___")) + 1;
-                var firstTripleHash = monsterLines.FindIndex(f => f.StartsWith("> ###"));
+                var lastUnderScoreLine = statBlockLines.FindLastIndex(f => f.Contains("___")) + 1;
+                var firstTripleHash = statBlockLines.FindIndex(f => f.StartsWith("> ###"));
 
                 if (firstTripleHash != -1)
                 {
-                    var traitLines = monsterLines.Skip(lastUnderScoreLine).Take(firstTripleHash - lastUnderScoreLine).CleanListOfStrings().ToList();
+                    var traitLines = statBlockLines.Skip(lastUnderScoreLine).Take(firstTripleHash - lastUnderScoreLine).CleanListOfStrings().ToList();
                     if (traitLines.Any())
                     {
                         monster.Behaviors.AddRange(GetMonsterBehaviorsFromLines(traitLines, MonsterBehaviorType.Trait));
                     }
 
-                    var secondTripleHash = monsterLines.FindIndex(firstTripleHash + 1, f => f.StartsWith("> ###"));
+                    var secondTripleHash = statBlockLines.FindIndex(firstTripleHash + 1, f => f.StartsWith("> ###"));
                     if (secondTripleHash != -1)
                     {
-                        traitLines = monsterLines.Skip(firstTripleHash).Take(secondTripleHash - firstTripleHash)
+                        traitLines = statBlockLines.Skip(firstTripleHash).Take(secondTripleHash - firstTripleHash)
                             .CleanListOfStrings().ToList();
-                        var behaviorType = DetermineBehaviorType(monsterLines[firstTripleHash]);
+                        var behaviorType = DetermineBehaviorType(statBlockLines[firstTripleHash]);
                         monster.Behaviors.AddRange(GetMonsterBehaviorsFromLines(traitLines, behaviorType));
 
-                        var thirdTripleHash = monsterLines.FindIndex(secondTripleHash + 1, f => f.StartsWith("> ###"));
+                        var thirdTripleHash = statBlockLines.FindIndex(secondTripleHash + 1, f => f.StartsWith("> ###"));
                         if (thirdTripleHash != -1)
                         {
-                            traitLines = monsterLines.Skip(secondTripleHash).Take(thirdTripleHash - secondTripleHash)
+                            traitLines = statBlockLines.Skip(secondTripleHash).Take(thirdTripleHash - secondTripleHash)
                                 .CleanListOfStrings().ToList();
-                            behaviorType = DetermineBehaviorType(monsterLines[secondTripleHash]);
+                            behaviorType = DetermineBehaviorType(statBlockLines[secondTripleHash]);
                             monster.Behaviors.AddRange(GetMonsterBehaviorsFromLines(traitLines, behaviorType));
 
-                            traitLines = monsterLines.Skip(thirdTripleHash).CleanListOfStrings().ToList();
-                            behaviorType = DetermineBehaviorType(monsterLines[thirdTripleHash]);
+                            traitLines = statBlockLines.Skip(thirdTripleHash).CleanListOfStrings().ToList();
+                            behaviorType = DetermineBehaviorType(statBlockLines[thirdTripleHash]);
                             monster.Behaviors.AddRange(GetMonsterBehaviorsFromLines(traitLines, behaviorType));
                         }
                         else
                         {
-                            traitLines = monsterLines.Skip(secondTripleHash).CleanListOfStrings().ToList();
-                            behaviorType = DetermineBehaviorType(monsterLines[secondTripleHash]);
+                            traitLines = statBlockLines.Skip(secondTripleHash).CleanListOfStrings().ToList();
+                            behaviorType = DetermineBehaviorType(statBlockLines[secondTripleHash]);
                             monster.Behaviors.AddRange(GetMonsterBehaviorsFromLines(traitLines, behaviorType));
                         }
                     }
                     else
                     {
-                        traitLines = monsterLines.Skip(firstTripleHash).CleanListOfStrings().ToList();
-                        var result = Enumerable.Range(0, traitLines.Count)
-                            .Where(i => traitLines[i].StartsWith("> ***") || traitLines[i].StartsWith(">***"))
-                            .ToList();
-                        var behaviorType = DetermineBehaviorType(monsterLines[firstTripleHash]);
+                        traitLines = statBlockLines.Skip(firstTripleHash).CleanListOfStrings().ToList();
+                        //var result = Enumerable.Range(0, traitLines.Count)
+                        //    .Where(i => traitLines[i].StartsWith("> ***") || traitLines[i].StartsWith(">***"))
+                        //    .ToList();
+                        var behaviorType = DetermineBehaviorType(statBlockLines[firstTripleHash]);
                         monster.Behaviors.AddRange(GetMonsterBehaviorsFromLines(traitLines, behaviorType));
                     }
                 }
                 else
                 {
-                    var traitLines = monsterLines.Skip(lastUnderScoreLine).ToList();
+                    var traitLines = statBlockLines.Skip(lastUnderScoreLine).ToList();
 
                     if (traitLines.Any())
                     {

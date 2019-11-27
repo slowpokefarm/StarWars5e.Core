@@ -31,7 +31,6 @@ namespace StarWars5e.Models.Monster
         public string ArmorType { get; set; }
         public int HitPoints { get; set; }
         public string HitPointRoll { get; set; }
-        public int Speed { get; set; }
         public string Speeds { get; set; }
         public int Strength { get; set; }
         public int StrengthModifier { get; set; }
@@ -143,5 +142,7 @@ namespace StarWars5e.Models.Monster
             get => ImageUrls == null ? "" : JsonConvert.SerializeObject(ImageUrls);
             set => ImageUrls = JsonConvert.DeserializeObject<List<string>>(value);
         }
+
+        public string FlavorText { get; set; }
     }
 }

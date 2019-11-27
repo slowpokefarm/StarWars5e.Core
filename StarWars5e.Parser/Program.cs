@@ -33,8 +33,8 @@ namespace StarWars5e.Parser
             var starshipManager = new StarshipsOfTheGalaxyManager(serviceProvider.GetService<ITableStorage>(),
                 serviceProvider.GetService<CloudStorageAccount>(),
                 serviceProvider.GetService<GlobalSearchTermRepository>());
-            var monsterManualManager = new MonsterManualManager(serviceProvider.GetService<ITableStorage>(),
-                serviceProvider.GetService<GlobalSearchTermRepository>());
+            //var scumAndVillainyManager = new ScumAndVillainyManager(serviceProvider.GetService<ITableStorage>(),
+                //serviceProvider.GetService<GlobalSearchTermRepository>());
             var extendedContentSpeciesManager = new ExpandedContentSpeciesManager(
                 serviceProvider.GetService<ITableStorage>(), serviceProvider.GetService<GlobalSearchTermRepository>());
             var extendedContentBackgroundManager = new ExpandedContentBackgroundsManager(
@@ -63,7 +63,7 @@ namespace StarWars5e.Parser
 
             var referenceTables = await referenceTableManager.Parse();
             await starshipManager.Parse(referenceTables);
-            await monsterManualManager.Parse();
+            //await scumAndVillainyManager.Parse();
             await extendedContentSpeciesManager.Parse();
             await extendedContentBackgroundManager.Parse();
             await extendedContentEquipmentManager.Parse();

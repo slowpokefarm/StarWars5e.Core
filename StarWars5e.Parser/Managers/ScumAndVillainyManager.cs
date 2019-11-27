@@ -9,14 +9,14 @@ using Wolnik.Azure.TableStorage.Repository;
 
 namespace StarWars5e.Parser.Managers
 {
-    public class MonsterManualManager
+    public class ScumAndVillainyManager
     {
         private readonly ITableStorage _tableStorage;
         private readonly IBaseProcessor<Monster> _monsterProcessor;
-        private readonly List<string> _mmFileName = new List<string> { "mm.txt" };
+        private readonly List<string> _snvFileName = new List<string> { "SNV_Content.txt" };
         private readonly GlobalSearchTermRepository _globalSearchTermRepository;
 
-        public MonsterManualManager(ITableStorage tableStorage, GlobalSearchTermRepository globalSearchTermRepository)
+        public ScumAndVillainyManager(ITableStorage tableStorage, GlobalSearchTermRepository globalSearchTermRepository)
         {
             _tableStorage = tableStorage;
             _globalSearchTermRepository = globalSearchTermRepository;
@@ -27,7 +27,7 @@ namespace StarWars5e.Parser.Managers
         {
             try
             {
-                var monsters = await _monsterProcessor.Process(_mmFileName);
+                var monsters = await _monsterProcessor.Process(_snvFileName);
 
                 foreach (var monster in monsters)
                 {
