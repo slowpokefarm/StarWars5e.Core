@@ -37,7 +37,7 @@
 
 **Рики (кидает d20):** Тьфу. Семь.
 
-**ГМ:** Ты видишь, как двое наколонились над землей, но ты не можешь понять, что именно они делают. И Дрю, Дэш достает гранату?
+**GM:** Ты видишь, как двое наколонились над землей, но ты не можешь понять, что именно они делают. И Дрю, Дэш достает гранату?
 
 **Дрю:** Да!
 
@@ -73,7 +73,7 @@
 
 Все эти миры имеют общие характеристики, но каждый мир отличается своей историей и культурой, уникальными монстрами и формами жизни, фантастической географией, древними руинами и коварными злодеями. В некоторых мирах преобладает одна ключевая история, например, война сепаратистов на Орд Мантелл. В конечном итоге это все миры *Звездных войн*, и вы можете использовать правила этой книги, чтобы создать персонажа и играть в любом из них.
 
-Ваш ГМ может создать кампанию в одном из этих миров или в другом, который он создал самостоятельно. Из-за того что существует такое многообразие миров *Звездных войн*, вы должны осведомиться у Мастера о наличии так называемых «до- машних правил», которые будут влиять на ход игры. Мастер является главным авторитетом в проведении кампании в любом игровом мире, даже если тот принадлежит к канону.
+Ваш Мастер может создать кампанию в одном из этих миров или в другом, который он создал самостоятельно. Из-за того что существует такое многообразие миров *Звездных войн*, вы должны осведомиться у Мастера о наличии так называемых «до- машних правил», которые будут влиять на ход игры. Мастер является главным авторитетом в проведении кампании в любом игровом мире, даже если тот принадлежит к канону.
 
 ## Использование Этой Книги
 *Книга игрока* делится на двенадцать глав.
@@ -85,39 +85,42 @@
 **Главы 10-12** полностью посвящены Силе и технологиям. Они охватывают природу особых способностей в мирах *Звездных Войн*, правила для их использования и огромное разнообразие самих способностей, доступных персонажам в игре.
 
 ## Как играть
-The play of the <span style="font-variant: small-caps">Dungeons and Dragons</span> game unfolds according to this basic pattern.
+Игра в <span style="font-variant: small-caps">Dungeons and Dragons</span> развивается, следуя описанному ниже шаблону.
 
-**1. The GM describes the environment.** The GM tells the players where their adventurers are and what's around them, presenting the basic scope of options that present themselves (how many doors lead out of a room, what's on a table, who's in the cantina, and so on).
+**1. Мастер описывает окружение.** Он говорит игрокам, где находятся их искатели приключений и что их окружает, предоставляя основной набор вариантов взаимодействия с окружением (сколько дверей есть в комнате, что находится на столе, кто сидит в кантине и так далее).
+o on).
 
-**2. The players describe what they want to do.** Sometimes one player speaks for the whole party, saying, "We'll take the east door," for example. Other times, different adventurers do different things: one adventurer might search a container while a second examines a symbol engraved on a wall and a third keeps watch for enemies. The players don't need to take turns, but the GM listens to every player and decides how to resolve those actions.
+**2. Игроки описывают, что они хотят сделать.** Иногда один игрок говорит за весь отряд: «Мы идём в восточную дверь», например. В другой раз разные искатели приключений делают разные вещи: один может обыскивать контейнер, в то время как второй изучает символ, выгравированный на стене, а третий стоит на страже. Игроки не должны действовать строго по очереди, но Мастер слушает каждого игрока и решает исход этих действий.
 
 \columnbreak
 
-Sometimes, resolving a task is easy. If an adventurer wants to walk across a room and open a door, the GM might just say that the door opens and describe what lies beyond. But the door might be locked, the floor might hide a deadly trap, or some other circumstance might make it challenging for an adventurer to complete a task. In those cases, the GM decides what happens, often relying on the roll of a die to determine the results of an action.
 
-**3. The GM narrates the results of the adventurers' actions.** Describing the results often leads to another decision point, which brings the flow of the game right back to step 1.
+Иногда решить исход действий легко. Если искатель приключений хочет пересечь комнату и открыть дверь, Мастер может просто сказать, что дверь открыта, и описать, что за ней находится. Но дверь может быть заперта, на полу может скрываться смертельная ловушка, или какое-нибудь другое обстоятельство может осложнять задачу персонажа. В таком случае Мастер решает, что произойдёт, возможно, полагаясь на бросок костей, чтобы определить последствия действий.
 
-This pattern holds whether the adventurers are cautiously exploring a ruin, talking to a devious noble, or locked in mortal combat against a mighty rancor. In certain situations, particularly combat, the action is more structured and the players (and GM) do take turns choosing and resolving actions. But most of the time, play is fluid and flexible, adapting to the circumstances of the adventure.
+**3. Мастер описывает последствия действий искателей приключений.** Описание последствий часто приводит повторному принятию решений, что возвращает игру назад к шагу 1.
 
-Often the action of an adventure takes place in the imagination of the players and GM, relying on the GM's verbal descriptions to set the scene. Some GMs like to use music, art, or recorded sound effects to help set the mood, and many players and GMs alike adopt different voices for the various adventurers, monsters, and other characters they play in the game. Sometimes, a GM might lay out a map and use tokens or miniature figures to represent each creature involved in a scene to help the players keep track of where everyone is.
+Этот шаблон сохраняется независимо от того, что делают искатели приключений: осторожно исследует руины, говорят с коварным дворянином или сражаются с могущественным ранкором. В некоторых ситуациях, особенно в бою, действия более упорядочены и игроки (а также Мастер) действуют по очереди, выбирая и совершая действия. Но большую часть времени игра течёт плавно и гибко, приспосабливаясь к обстоятельствам приключения.
 
-### Game Dice
-The game uses polyhedral dice with different numbers of sides. You can find dice like these in game stores and in many bookstores.
+Зачастую действие приключения происходит в воображении игроков и Мастера и опирается на словесные зарисовки. Некоторым Мастерам нравится использовать музыку, рисунки или звуковые эффекты, чтобы помочь создать настроение, а многие игроки, как и Мастера, подражают разным голосам, имитируя разных героев, чудовищ и других персонажей, которых они отыгрывают. Иногда Мастер может выложить на стол карту местности и использовать жетоны или миниатюры, представляющие каждое существо, участвующее в сцене, чтобы помочь игрокам отслеживать, кто и где расположен.
 
-In these rules, the different dice are referred to by the letter d followed by the number of sides: d4, d6, d8, d 10, d12, and d20. For instance, a d6 is a six-sided die (the typical cube that many games use).
+### Игровые кости
+В игре используются многогранные кости с разным количеством граней. Вы можете найти такие кости в игровых и многих книжных магазинах.
 
-Percentile dice, or d100, work a little differently. You generate a number between 1 and 100 by rolling two different ten-sided dice numbered from 0 to 9. One die (designated before you roll) gives the tens digit, and the other gives the ones digit. If you roll a 7 and a 1, for example, the number rolled is 71. Two 0s represent 100. Some ten-sided dice are numbered in tens (00, 10, 20, and so on), making it easier to distinguish the tens digit from the ones digit. In this case, a roll of 70 and 1 is 71, and 00 and 0 is 100.
+В этих правилах разные кости обозначаются буквой d, за которой следует количество сторон: d4, d6, d8, d 10, d12, и d20. Например, d6 - это шестигранный кубик (обычный куб, который используется во многих настольных и азартных играх).
 
-When you need to roll dice, the rules tell you how many dice to roll of a certain type, as well as what modifiers to add. For example, "3d8 + 5" means you roll three eight-sided dice, add them together, and add 5 to the total.
+Процентные кости, или d100, работают немного по-другому. Вы генерируете число от 1 до 100, бросая две разные десятигранные кости, пронумерованные от 0 до 9. Один кубик (четко обозначенный перед броском) означает цифру десятков, а другой - цифру единиц. Например, если вы выбросили 7 и 1, полученное броском число равно 71. Два 0 обозначают 100. Некоторые десятисторонние кости пронумерованы десятками (00, 10, 20 и т. д.), из-за чего их проще отличить от кости, отвечающей за единицы. В этом случае, выбросив 70 и 1, вы получите 71, а выбросив 00 и 0 - получите 100.
 
-The same d notation appears in the expressions "1d3" and "1d2." To simulate the roll of 1d3, roll a d6 and divide the number rolled by 2 (round up). To simulate the roll of 1d2, roll any die and assign a 1 or 2 to the roll depending on whether it was odd or even. (Alternatively, if the number rolled is more than half the number of sides on the die, it's a 2.)
+Когда вам нужно бросить кости, правила сообщают вам, сколько бросать кубиков определенного типа, а также какие добавить модификаторы. Например, «3d8 + 5» означает, что вы бросаете три восьмигранных кубика, складываете их вместе и добавляете 5 к общей сумме.
 
-<div class='footnote'>INTRODUCTION</div>
+То же обозначение d появляется в выражениях «1d3» и «1d2». Для имитации броска 1d3, бросьте кубик d6 и разделите результат на 2 (округление вверх). Чтобы сымитировать бросок 1d2, бросьте любой кубик и назначьте результат 1 или 2 нечетным и четным числам соответственно (альтернативный вариант — если результат броска больше половины граней кости, результат равен 2).
+
+<div class='footnote'>ВВЕДЕНИЕ</div>
 
 \pagebreakNum
 
-### The D20
-Does an adventurer's vibroblade swing hurt a rancor or just bounce off its leathery hide? Will the guard believe an outrageous bluff? Can a character swim across a raging river? Can a character avoid the main blast of a Sith's *force storm*, or does he or she take full damage from the tempest? In cases where the outcome of an action is uncertain, the <span style="font-variant: small-caps">Dungeons and Dragons</span> game relies on rolls of a 20-sided die, a d20, to determine success or failure. 
+### D20
+
+Нанес ли виброклинок искателя приключений повреждения ранкору или просто отскочил от его твёрдой шкуры? Поверит ли охранник возмутительной лжи? Сможет ли персонаж переплыть бушующую реку? Сможет персонаж избежать порыва ситского *силового шторма* или получит полный урон от урагана? В случаях, когда исход действия неизвестен, <span style="font-variant: small-caps">Dungeons and Dragons</span> полагается на бросок 20-гранной кости (d20), чтобы определить успех или провал.
 
 Every character and monster in the game has capabilities defined by six **ability scores**. The abilities are Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma, and they typically range from 3 to 18 for most adventurers. (Monsters might have scores as low as 1 or as high as 30.) These ability scores, and the **ability modifiers**derived from them, are the basis for almost every d20 roll that a player makes on a character's or monster's behalf.
 
