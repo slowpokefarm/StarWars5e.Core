@@ -13,7 +13,9 @@ namespace StarWars5e.Parser.Processors.PHB
 
             var expandedContentEquipmentProcessor = new ExpandedContentEquipmentProcessor(Localization);
             equipmentList.AddRange(await expandedContentEquipmentProcessor.ParseWeapons(lines,
-                Localization.PHBBlastersTableStart, false, 1, ContentType.Core));
+                Localization.PHBSimpleBlastersTableStart, true, 1, ContentType.Core));
+            equipmentList.AddRange(await expandedContentEquipmentProcessor.ParseWeapons(lines,
+                Localization.PHBMartialBlastersTableStart, true, 1, ContentType.Core));
             equipmentList.AddRange(await expandedContentEquipmentProcessor.ParseWeapons(lines,
                 Localization.PHBVibroweaponsTableStart, false, 1, ContentType.Core));
             equipmentList.AddRange(await expandedContentEquipmentProcessor.ParseWeapons(lines,
@@ -23,7 +25,7 @@ namespace StarWars5e.Parser.Processors.PHB
                 Localization.PHBArmorAndShieldsTableStart, ContentType.Core));
 
             equipmentList.AddRange(await expandedContentEquipmentProcessor.ParseOtherEquipment(lines,
-                Localization.PHBArtisansToolsTableStart, true, 1, ContentType.Core));
+                Localization.PHBArtisansImplementsTableStart, true, 1, ContentType.Core));
             equipmentList.AddRange(await expandedContentEquipmentProcessor.ParseOtherEquipment(lines,
                 Localization.PHBAmmunitionTableStart, true, 2, ContentType.Core));
             equipmentList.AddRange(await expandedContentEquipmentProcessor.ParseOtherEquipment(lines,

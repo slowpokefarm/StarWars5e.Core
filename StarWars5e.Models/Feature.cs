@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.Azure.Cosmos.Table;
 using StarWars5e.Models.Enums;
 
 namespace StarWars5e.Models
@@ -15,5 +15,7 @@ namespace StarWars5e.Models
             get => SourceEnum.ToString();
             set => SourceEnum = Enum.Parse<FeatureSource>(value);
         }
+        public string SourceName { get; set; }
+        public string Metadata { get; set; }
     }
 }

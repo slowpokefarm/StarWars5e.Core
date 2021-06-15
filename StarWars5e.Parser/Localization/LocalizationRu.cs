@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using StarWars5e.Models.Enums;
 
 namespace StarWars5e.Parser.Localization
@@ -163,7 +164,7 @@ namespace StarWars5e.Parser.Localization
 
         public string PHBArmorAndShieldsTableStart => throw new System.NotImplementedException();
 
-        public string PHBArtisansToolsTableStart => throw new System.NotImplementedException();
+        public string PHBArtisansImplementsTableStart => throw new System.NotImplementedException();
 
         public string PHBAmmunitionTableStart => throw new System.NotImplementedException();
 
@@ -398,6 +399,8 @@ namespace StarWars5e.Parser.Localization
         public string artifact => throw new System.NotImplementedException();
 
         public string adventuringgear => throw new System.NotImplementedException();
+
+        public string AdventuringGear => throw new System.NotImplementedException();
 
         public string body => throw new System.NotImplementedException();
 
@@ -707,7 +710,7 @@ namespace StarWars5e.Parser.Localization
 
         public string ECClassificationStorage => throw new System.NotImplementedException();
 
-        public string ECClassificationArtisansTools => throw new System.NotImplementedException();
+        public string ECClassificationArtisansImplements => throw new System.NotImplementedException();
 
         public string ECClassificationGamingSet => throw new System.NotImplementedException();
 
@@ -805,7 +808,7 @@ namespace StarWars5e.Parser.Localization
 
         public string ReferenceTableNameStarshipSizeStockCost => throw new System.NotImplementedException();
 
-        public string ReferenceTableNameStarshipSizeConstructionWorkforce => throw new System.NotImplementedException();
+        public string ReferenceTableNameStarshipSizeBuildingWorkforce => throw new System.NotImplementedException();
 
         public string ReferenceTableNameBaseUpgradeCostByTier => throw new System.NotImplementedException();
 
@@ -881,7 +884,7 @@ namespace StarWars5e.Parser.Localization
 
         public string ReferenceTableStartingLineStarshipSizeStockCost => throw new System.NotImplementedException();
 
-        public string ReferenceTableStartingLineStarshipSizeConstructionWorkforce => throw new System.NotImplementedException();
+        public string ReferenceTableStartingLineStarshipSizeBuildingWorkforce => throw new System.NotImplementedException();
 
         public string ReferenceTableStartingLineBaseUpgradeCostByTier => throw new System.NotImplementedException();
 
@@ -948,6 +951,214 @@ namespace StarWars5e.Parser.Localization
         public string Engineering => throw new System.NotImplementedException();
 
         public string Pursuit => throw new System.NotImplementedException();
+
+        public string EnhancedItems => throw new System.NotImplementedException();
+
+        public string Monsters => throw new System.NotImplementedException();
+
+        public string Classes => throw new System.NotImplementedException();
+
+        public string Species => throw new System.NotImplementedException();
+
+        public string Archetypes => throw new System.NotImplementedException();
+
+        public string Backgrounds => throw new System.NotImplementedException();
+
+        public string ForcePowers => throw new System.NotImplementedException();
+
+        public string TechPowers => throw new System.NotImplementedException();
+
+        public string StarshipModifications => throw new System.NotImplementedException();
+
+        public string StarshipEquipment => throw new System.NotImplementedException();
+
+        public string StarshipWeapons => throw new System.NotImplementedException();
+
+        public string Ventures => throw new System.NotImplementedException();
+
+        public string AdditionalVariantRules => throw new System.NotImplementedException();
+
+        public string MonsterManual => throw new System.NotImplementedException();
+
+        public string WretchedHives => throw new System.NotImplementedException();
+
+        public string WretchedHivesChangelog => throw new System.NotImplementedException();
+
+        public string StarshipsOfTheGalaxy => throw new System.NotImplementedException();
+
+        public string StarshipsOfTheGalaxyChangelog => throw new System.NotImplementedException();
+
+        public string PlayersHandbook => throw new System.NotImplementedException();
+
+        public string PlayersHandbookChangelog => throw new System.NotImplementedException();
+
+        public string WeaponProperties => throw new System.NotImplementedException();
+
+        public string ArmorProperties => throw new System.NotImplementedException();
+
+        public string SOTGVariantSpaceStations => throw new System.NotImplementedException();
+
+        public string Fighter => throw new System.NotImplementedException();
+
+        public string WHAlcoholicBeveragesStartLine => throw new System.NotImplementedException();
+
+        public string ECClassificationAlcoholicBeverages => throw new System.NotImplementedException();
+
+        public string ECClassificationSpices => throw new System.NotImplementedException();
+
+        public string ChooseAny => throw new System.NotImplementedException();
+
+        public string ECAmmunitionStartLine => throw new System.NotImplementedException();
+
+        public string PHBSimpleBlastersTableStart => throw new System.NotImplementedException();
+
+        public string PHBMartialBlastersTableStart => throw new System.NotImplementedException();
+
+        public string WHDataRecordingAndStorageStartLine => throw new System.NotImplementedException();
+
+        public string WHExplosivesStartLine => throw new System.NotImplementedException();
+
+        public string WHArtisansImplementsStartLine => throw new System.NotImplementedException();
+
+        public string ECVariantRuleCompoundAdvantage => throw new System.NotImplementedException();
+
+        public string ECVariantRuleCompoundAdvantageStartingLetter => throw new System.NotImplementedException();
+
+        public string AtWill => throw new System.NotImplementedException();
+
+        public string FirstLevel => throw new System.NotImplementedException();
+
+        public string SecondLevel => throw new System.NotImplementedException();
+
+        public string FourthLevel => throw new System.NotImplementedException();
+
+        public string FifthLevel => throw new System.NotImplementedException();
+
+        public string ThirdLevel => throw new System.NotImplementedException();
+
+        public string SixthLevel => throw new System.NotImplementedException();
+
+        public string SeventhLevel => throw new System.NotImplementedException();
+
+        public string EighthLevel => throw new System.NotImplementedException();
+
+        public string NinthLevel => throw new System.NotImplementedException();
+
+        public Tuple<string, int> FirstLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SecondLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> ThirdLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> FourthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> FifthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SixthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SeventhLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> EighthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> NinthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> TenthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> EleventhLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> TwelfthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> ThirteenthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> FourteenthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> FifteenthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SixteenthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SeventeenthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> EighteenthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> NineteenthLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> TwentiethLevelNum => throw new NotImplementedException();
+
+        public Tuple<string, int> FirstNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SecondNum => throw new NotImplementedException();
+
+        public Tuple<string, int> ThirdNum => throw new NotImplementedException();
+
+        public Tuple<string, int> FourthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> FifthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SixthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SeventhNum => throw new NotImplementedException();
+
+        public Tuple<string, int> EighthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> NinthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> TenthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> EleventhNum => throw new NotImplementedException();
+
+        public Tuple<string, int> TwelfthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> ThirteenthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> FourteenthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> FifteenthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SixteenthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> SeventeenthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> EighteenthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> NineteenthNum => throw new NotImplementedException();
+
+        public Tuple<string, int> TwentiethNum => throw new NotImplementedException();
+
+        public string SOTGTertiaryAmmunitionTableStartingLine => throw new NotImplementedException();
+
+        public string SOTGQuaternaryAmmunitionTableStartingLine => throw new NotImplementedException();
+
+        public string SOTGReactorsTableStartingLineFuelCosts => throw new NotImplementedException();
+
+        public string SOTGReactorsTableReactorsStartingLine => throw new NotImplementedException();
+
+        public string SOTGReactorsTablePowerCouplingsStartingLine => throw new NotImplementedException();
+
+        public string ReferenceTableNameDeploymentRankPrestige => throw new NotImplementedException();
+
+        public string ReferenceTableNameModificationCapacityByShipSize => throw new NotImplementedException();
+
+        public string ReferenceTableNameModificationGradeInstallationByShipTier => throw new NotImplementedException();
+
+        public string ReferenceTableNameBaseHyperspaceTravelTimes => throw new NotImplementedException();
+
+        public string ReferenceTableNameStarshipSizeRefittingTime => throw new NotImplementedException();
+
+        public string ReferenceTableNameStarshipSlowedLevel => throw new NotImplementedException();
+
+        public string ReferenceTableStartingLineDeploymentRankPrestige => throw new NotImplementedException();
+
+        public string ReferenceTableStartingLineModificationCapacityByShipSize => throw new NotImplementedException();
+
+        public string ReferenceTableStartingLineModificationGradeInstallationByShipTier => throw new NotImplementedException();
+
+        public string ReferenceTableStartingLineBaseHyperspaceTravelTimes => throw new NotImplementedException();
+
+        public string ReferenceTableStartingLineStarshipSizeRefittingTime => throw new NotImplementedException();
+
+        public string ReferenceTableStartingLineStarshipSlowedLevel => throw new NotImplementedException();
+
+        public string ECStorageStartLine => throw new NotImplementedException();
 
         public string GetDeploymentTableStart(string deploymentName)
         {

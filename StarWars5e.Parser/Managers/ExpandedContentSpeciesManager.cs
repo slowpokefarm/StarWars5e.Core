@@ -2,39 +2,44 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
+using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Extensions.DependencyInjection;
+using StarWars5e.Models;
 using StarWars5e.Models.Enums;
 using StarWars5e.Models.Lookup;
 using StarWars5e.Models.Species;
 using StarWars5e.Parser.Localization;
 using StarWars5e.Parser.Processors;
-using Wolnik.Azure.TableStorage.Repository;
+using StarWars5e.Parser.Storage;
 
 namespace StarWars5e.Parser.Managers
 {
     public class ExpandedContentSpeciesManager
     {
-        private readonly ITableStorage _tableStorage;
+        private readonly IAzureTableStorage _tableStorage;
         private readonly GlobalSearchTermRepository _globalSearchTermRepository;
-        private readonly List<string> _ecSpeciesFileName = new List<string> { "ec_species.txt" };
+        private readonly List<string> _ecSpeciesFileName = new() { "ec_02.txt" };
         private readonly ILocalization _localization;
+        private readonly FeatureRepository _featureRepository;
 
-        public ExpandedContentSpeciesManager(ITableStorage tableStorage, GlobalSearchTermRepository globalSearchTermRepository, ILocalization localization)
+
+        public ExpandedContentSpeciesManager(IServiceProvider serviceProvider, ILocalization localization)
         {
-            _tableStorage = tableStorage;
-            _globalSearchTermRepository = globalSearchTermRepository;
+            _tableStorage = serviceProvider.GetService<IAzureTableStorage>();
+            _globalSearchTermRepository = serviceProvider.GetService<GlobalSearchTermRepository>();
             _localization = localization;
+            _featureRepository = serviceProvider.GetService<FeatureRepository>();
         }
 
         public async Task Parse()
         {
+            var speciesImageUrlsLu = await _tableStorage.GetAllAsync<SpeciesImageUrlLU>("speciesImageUrlsLU");
+
+            var speciesProcessor = new ExpandedContentSpeciesProcessor(_localization, speciesImageUrlsLu.ToList());
+            var species = await speciesProcessor.Process(_ecSpeciesFileName, _localization);
+
             try
             {
-                var speciesImageUrlsLU = await _tableStorage.GetAllAsync<SpeciesImageUrlLU>("speciesImageUrlsLU");
-                var speciesProcessor = new ExpandedContentSpeciesProcessor(_localization, speciesImageUrlsLU.ToList());
-
-                var species = await speciesProcessor.Process(_ecSpeciesFileName, _localization);
-
                 foreach (var specie in species)
                 {
                     specie.ContentSourceEnum = ContentSource.EC;
@@ -46,6 +51,21 @@ namespace StarWars5e.Parser.Managers
 
                 await _tableStorage.AddBatchAsync<Species>($"species{_localization.Language}", species,
                     new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+            }
+            catch (StorageException)
+            {
+                Console.WriteLine("Failed to upload EC species.");
+            }
+
+            try
+            {
+                var specieFeatures = species.SelectMany(f => f.Features).ToList();
+
+                await _tableStorage.AddBatchAsync<Feature>($"features{_localization.Language}", specieFeatures,
+                    new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+
+                _featureRepository.Features.AddRange(specieFeatures);
+
             }
             catch (StorageException)
             {

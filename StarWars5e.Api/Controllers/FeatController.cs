@@ -2,10 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.WindowsAzure.Storage;
+using Microsoft.Azure.Cosmos.Table;
 using StarWars5e.Api.Storage;
 using StarWars5e.Models;
-using StarWars5e.Models.EnhancedItems;
 using StarWars5e.Models.Enums;
 
 namespace StarWars5e.Api.Controllers

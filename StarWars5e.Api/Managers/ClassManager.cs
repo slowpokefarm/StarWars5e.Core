@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.Azure.Cosmos.Table;
 using StarWars5e.Api.Interfaces;
 using StarWars5e.Api.Storage;
 using StarWars5e.Models.Class;
@@ -28,7 +28,7 @@ namespace StarWars5e.Api.Managers
             if (classSearch.ContentType.HasValue && classSearch.ContentType != ContentType.None)
             {
                 if (!string.IsNullOrEmpty(filter)) filter = $"{filter} and";
-                filter = $"{filter} ContentType eq '{classSearch.ContentType.ToString()}'";
+                filter = $"{filter} ContentType eq '{classSearch.ContentType}'";
             }
 
             var query = new TableQuery<Class>().Where(filter);

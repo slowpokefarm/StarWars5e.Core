@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Azure.Storage.Blobs;
+using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using StarWars5e.Models;
 using StarWars5e.Models.Background;
@@ -15,14 +18,13 @@ using StarWars5e.Models.Species;
 using StarWars5e.Parser.Localization;
 using StarWars5e.Parser.Processors;
 using StarWars5e.Parser.Processors.PHB;
-using Wolnik.Azure.TableStorage.Repository;
+using StarWars5e.Parser.Storage;
 
 namespace StarWars5e.Parser.Managers
 {
     public class PlayerHandbookManager
     {
-        private readonly ITableStorage _tableStorage;
-        private readonly CloudBlobContainer _cloudBlobContainer;
+        private readonly IAzureTableStorage _tableStorage;
         private readonly PlayerHandbookEquipmentProcessor _playerHandbookEquipmentProcessor;
         private readonly PlayerHandbookBackgroundsProcessor _playerHandbookBackgroundsProcessor;
         private readonly PlayerHandbookChapterRulesProcessor _playerHandbookChapterRulesProcessor;
@@ -31,34 +33,62 @@ namespace StarWars5e.Parser.Managers
         private readonly ArmorPropertyProcessor _armorPropertyProcessor;
         private readonly GlobalSearchTermRepository _globalSearchTermRepository;
         private readonly ILocalization _localization;
+        private readonly BlobContainerClient _blobContainerClient;
+        private readonly FeatureRepository _featureRepository;
 
-        private readonly List<string> _phbFilesNames = new List<string>
+        private readonly List<string> _phbFilesNames = new()
         {
             "PHB.phb_-1.txt", "PHB.phb_00.txt", "PHB.phb_01.txt", "PHB.phb_02.txt", "PHB.phb_03.txt", "PHB.phb_04.txt",
             "PHB.phb_05.txt", "PHB.phb_06.txt", "PHB.phb_07.txt", "PHB.phb_08.txt", "PHB.phb_09.txt", "PHB.phb_10.txt",
             "PHB.phb_11.txt", "PHB.phb_12.txt", "PHB.phb_aa.txt", "PHB.phb_ab.txt", "PHB.phb_changelog.txt"
         };
 
-        public PlayerHandbookManager(ITableStorage tableStorage, CloudStorageAccount cloudStorageAccount, GlobalSearchTermRepository globalSearchTermRepository, ILocalization localization)
+        public List<(string name, GlobalSearchTermType globalSearchTermType, string pathOverride)> ReferenceNames;
+
+        public PlayerHandbookManager(IServiceProvider serviceProvider,
+            ILocalization localization)
         {
-            _tableStorage = tableStorage;
+            _tableStorage = serviceProvider.GetService<IAzureTableStorage>();
+            _globalSearchTermRepository = serviceProvider.GetService<GlobalSearchTermRepository>();
 
             _playerHandbookEquipmentProcessor = new PlayerHandbookEquipmentProcessor();
             _playerHandbookBackgroundsProcessor = new PlayerHandbookBackgroundsProcessor();
-            _playerHandbookChapterRulesProcessor = new PlayerHandbookChapterRulesProcessor(globalSearchTermRepository);
+            _playerHandbookChapterRulesProcessor = new PlayerHandbookChapterRulesProcessor(_globalSearchTermRepository);
             _playerHandbookFeatProcessor = new PlayerHandbookFeatProcessor(localization);
-            _globalSearchTermRepository = globalSearchTermRepository;
             _localization = localization;
+
+            var blobServiceClient = serviceProvider.GetService<BlobServiceClient>();
+            _blobContainerClient = blobServiceClient.GetBlobContainerClient($"player-handbook-rules-{_localization.Language}");
 
             _weaponPropertyProcessor = new WeaponPropertyProcessor(ContentType.Core, _localization.PlayerHandbookWeaponProperties);
 
             _armorPropertyProcessor = new ArmorPropertyProcessor(ContentType.Core, _localization.PlayerHandbookArmorProperties);
 
-            var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-            _cloudBlobContainer = cloudBlobClient.GetContainerReference($"player-handbook-rules-{_localization.Language}");
+            ReferenceNames = new List<(string name, GlobalSearchTermType globalSearchTermType, string pathOverride)>
+            {
+                ( localization.Monsters, GlobalSearchTermType.Reference, "/rules/snv/monsters"),
+                ( localization.Classes, GlobalSearchTermType.Reference, "/characters/classes"),
+                ( localization.Species, GlobalSearchTermType.Reference, "/characters/species"),
+                ( localization.Archetypes, GlobalSearchTermType.Reference, "/characters/archetypes"),
+                ( localization.Backgrounds, GlobalSearchTermType.Reference, "/characters/backgrounds"),
+                ( localization.Armor, GlobalSearchTermType.Reference, "/loot/armor"),
+                ( localization.Weapons, GlobalSearchTermType.Reference, "/loot/weapons"),
+                ( localization.AdventuringGear, GlobalSearchTermType.Reference, "/loot/adventuringGear"),
+                ( localization.EnhancedItems, GlobalSearchTermType.Reference, "/loot/enhancedItems"),
+                ( localization.Feats, GlobalSearchTermType.Reference, "/characters/feats"),
+                ( localization.ForcePowers, GlobalSearchTermType.Reference, "/characters/forcePowers"),
+                ( localization.TechPowers, GlobalSearchTermType.Reference, "/characters/techPowers"),
+                ( localization.StarshipModifications, GlobalSearchTermType.Reference, "/starships/modifications"),
+                ( localization.StarshipEquipment, GlobalSearchTermType.Reference, "/starships/equipment"),
+                ( localization.StarshipWeapons, GlobalSearchTermType.Reference, "/starships/weapons"),
+                ( localization.Ventures, GlobalSearchTermType.Reference, "/starships/ventures"),
+                ( localization.AdditionalVariantRules, GlobalSearchTermType.Reference, "/rules/variantRules"),
+            };
+
+            _featureRepository = serviceProvider.GetService<FeatureRepository>();
         }
 
-        public async Task Parse()
+        public async Task<List<Power>> Parse()
         {
             try
             {
@@ -153,13 +183,28 @@ namespace StarWars5e.Parser.Managers
 
             try
             {
-                var speciesImageUrlsLus = await _tableStorage.GetAllAsync<SpeciesImageUrlLU>("speciesImageUrlsLU");
-                var playerHandbookSpeciesProcessor = new PlayerHandbookSpeciesProcessor(speciesImageUrlsLus.ToList());
+                var playerHandbookFeatureOptionsProcessor = new PlayerHandbookFeatureOptionsProcessor();
 
-                var species =
-                    await playerHandbookSpeciesProcessor.Process(_phbFilesNames.Where(p => p.Equals("PHB.phb_02.txt"))
+                var featureOptions = await playerHandbookFeatureOptionsProcessor.Process(_phbFilesNames.Where(p => p.Equals("PHB.phb_03.txt"))
                         .ToList(), _localization);
 
+                await _tableStorage.AddBatchAsync<FeatureOption>($"featureOptions{_localization.Language}", featureOptions,
+                 new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+
+            }
+            catch (StorageException se)
+            {
+                Console.WriteLine($"Failed to upload feature options. {se}");
+            }
+
+            var speciesImageUrlsLus = await _tableStorage.GetAllAsync<SpeciesImageUrlLU>("speciesImageUrlsLU");
+            var playerHandbookSpeciesProcessor = new PlayerHandbookSpeciesProcessor(speciesImageUrlsLus.ToList());
+
+            var species =
+                await playerHandbookSpeciesProcessor.Process(_phbFilesNames.Where(p => p.Equals("PHB.phb_02.txt"))
+                    .ToList(), _localization);
+            try
+            {
                 foreach (var specie in species)
                 {
                     specie.ContentSourceEnum = ContentSource.PHB;
@@ -179,8 +224,20 @@ namespace StarWars5e.Parser.Managers
 
             try
             {
-                var featureLevels = (await _tableStorage.GetAllAsync<FeatureDataLU>("featureLevelLU")).ToList();
+                var specieFeatures = species.SelectMany(f => f.Features).ToList();
 
+                await _tableStorage.AddBatchAsync<Feature>($"features{_localization.Language}", specieFeatures,
+                    new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+
+                _featureRepository.Features.AddRange(specieFeatures);
+            }
+            catch (StorageException)
+            {
+                Console.WriteLine("Failed to upload EC species.");
+            }
+
+            try
+            {
                 var classImageLus = await _tableStorage.GetAllAsync<ClassImageLU>("classImageLU");
                 var casterRatioLus = await _tableStorage.GetAllAsync<CasterRatioLU>("casterRatioLU");
                 var multiclassProficiencyLus =
@@ -220,27 +277,19 @@ namespace StarWars5e.Parser.Managers
                     {
                         var archetypeFeatures = archetypes.SelectMany(f => f.Features).ToList();
 
-                        foreach (var archetypeFeature in archetypeFeatures)
-                        {
-                            var featureLevel = featureLevels.SingleOrDefault(f => f.FeatureRowKey == archetypeFeature.RowKey);
-                            if (featureLevel != null)
-                            {
-                                archetypeFeature.Level = featureLevel.Level;
-                            }
-                        }
+                        var dupes = archetypeFeatures
+                            .GroupBy(i => i.RowKey)
+                            .Where(g => g.Count() > 1)
+                            .Select(g => g.Key);
 
                         await _tableStorage.AddBatchAsync<Feature>($"features{_localization.Language}", archetypeFeatures,
                             new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+                        _featureRepository.Features.AddRange(archetypeFeatures);
                     }
                     catch (StorageException se)
                     {
                         Console.WriteLine($"Failed to upload PHB archetype features: {se}");
                     }
-
-                    var dupes = archetypes
-                        .GroupBy(i => i.RowKey)
-                        .Where(g => g.Count() > 1)
-                        .Select(g => g.Key);
 
                     await _tableStorage.AddBatchAsync<Archetype>($"archetypes{_localization.Language}", archetypes,
                         new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
@@ -254,17 +303,14 @@ namespace StarWars5e.Parser.Managers
                 {
                     var classFeatures = classes.SelectMany(f => f.Features).ToList();
 
-                    foreach (var classFeature in classFeatures)
-                    {
-                        var featureLevel = featureLevels.SingleOrDefault(f => f.FeatureRowKey == classFeature.RowKey);
-                        if (featureLevel != null)
-                        {
-                            classFeature.Level = featureLevel.Level;
-                        }
-                    }
+                    var dupes = classFeatures
+                        .GroupBy(i => i.RowKey)
+                        .Where(g => g.Count() > 1)
+                        .Select(g => g.Key);
 
                     await _tableStorage.AddBatchAsync<Feature>($"features{_localization.Language}", classFeatures,
                         new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+                    _featureRepository.Features.AddRange(classFeatures);
                 }
                 catch (StorageException se)
                 {
@@ -276,12 +322,12 @@ namespace StarWars5e.Parser.Managers
                 Console.WriteLine("Failed to upload PHB classes.");
             }
 
+            var powers = new List<Power>();
             try
             {
-
                 var playerHandbookPowersProcessor = new PlayerHandbookPowersProcessor(_localization);
 
-                var powers =
+                powers =
                     await playerHandbookPowersProcessor.Process(_phbFilesNames.Where(p => p.Equals("PHB.phb_11.txt") || p.Equals("PHB.phb_12.txt"))
                         .ToList(), _localization);
                 
@@ -340,16 +386,86 @@ namespace StarWars5e.Parser.Managers
 
             try
             {
+                var lightsaberFormsProcessor = new PlayerHandbookCustomizationOptionsLightsaberFormsProcessor();
+                var lightsaberForms = await lightsaberFormsProcessor.Process(new List<string> { "PHB.phb_06.txt" }, _localization, ContentType.Core);
+
+                foreach (var lightsaberForm in lightsaberForms)
+                {
+                    lightsaberForm.ContentSourceEnum = ContentSource.PHB;
+
+                    var lightsaberFormSearchTerm = _globalSearchTermRepository.CreateSearchTerm(lightsaberForm.Name, GlobalSearchTermType.LightsaberForm, ContentType.Core,
+                        $"/characters/lightsaberForms/?search={lightsaberForm.Name}");
+                    _globalSearchTermRepository.SearchTerms.Add(lightsaberFormSearchTerm);
+                }
+
+                await _tableStorage.AddBatchAsync<LightsaberForm>($"lightsaberForms{_localization.Language}", lightsaberForms,
+                    new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+            }
+            catch (StorageException se)
+            {
+                Console.WriteLine($"Failed to upload PHB lightsaber forms: {se}");
+            }
+
+            try
+            {
+                var fightingStylesProcessor = new ExpandedContentCustomizationOptionsFightingStyleProcessor();
+                var fightingStyles = await fightingStylesProcessor.Process(new List<string> { "PHB.phb_06.txt" }, _localization, ContentType.Core);
+
+                foreach (var fightingStyle in fightingStyles)
+                {
+                    fightingStyle.ContentSourceEnum = ContentSource.PHB;
+
+                    var fightingStyleSearchTerm = _globalSearchTermRepository.CreateSearchTerm(fightingStyle.Name, GlobalSearchTermType.FightingStyle, ContentType.Core,
+                        $"/characters/fightingStyles/?search={fightingStyle.Name}");
+                    _globalSearchTermRepository.SearchTerms.Add(fightingStyleSearchTerm);
+                }
+
+                await _tableStorage.AddBatchAsync<FightingStyle>($"fightingStyles{_localization.Language}", fightingStyles,
+                    new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+            }
+            catch (StorageException)
+            {
+                Console.WriteLine("Failed to upload PHB fighting styles.");
+            }
+
+            try
+            {
+                var fightingMasteriesProcessor = new ExpandedContentCustomizationOptionsFightingMasteryProcessor();
+                var fightingMasteries = await fightingMasteriesProcessor.Process(new List<string> { "PHB.phb_06.txt" }, _localization, ContentType.Core);
+
+                foreach (var fightingMastery in fightingMasteries)
+                {
+                    fightingMastery.ContentSourceEnum = ContentSource.PHB;
+
+                    var fightingMasterySearchTerm = _globalSearchTermRepository.CreateSearchTerm(fightingMastery.Name, GlobalSearchTermType.FightingMastery, ContentType.Core,
+                        $"/characters/fightingMasteries/?search={fightingMastery.Name}");
+                    _globalSearchTermRepository.SearchTerms.Add(fightingMasterySearchTerm);
+                }
+
+                await _tableStorage.AddBatchAsync<FightingMastery>($"fightingMasteries{_localization.Language}", fightingMasteries,
+                    new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+            }
+            catch (StorageException)
+            {
+                Console.WriteLine("Failed to upload PHB fighting masteries.");
+            }
+
+            try
+            {
                 var rules =
                     await _playerHandbookChapterRulesProcessor.Process(_phbFilesNames, _localization);
 
-                await _cloudBlobContainer.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Off, null, null);
+                await _blobContainerClient.CreateIfNotExistsAsync();
                 foreach (var chapterRules in rules)
                 {
                     var json = JsonConvert.SerializeObject(chapterRules);
-                    var blob = _cloudBlobContainer.GetBlockBlobReference($"{chapterRules.ChapterName}.json");
+                    var blobClient = _blobContainerClient.GetBlobClient($"{chapterRules.ChapterName}.json");
 
-                    await blob.UploadTextAsync(json);
+                    var content = Encoding.UTF8.GetBytes(json);
+                    using (var ms = new MemoryStream(content))
+                    {
+                        await blobClient.UploadAsync(ms, true);
+                    }
                 }
             }
             catch (StorageException)
@@ -387,22 +503,24 @@ namespace StarWars5e.Parser.Managers
             }
             catch (StorageException)
             {
-                Console.WriteLine("Failed to upload PHB weapon properties.");
+                Console.WriteLine("Failed to upload PHB armor properties.");
             }
 
-            foreach (var referenceName in SectionNames.ReferenceNames)
+            foreach (var referenceName in ReferenceNames)
             {
                 var referenceSearchTerm = _globalSearchTermRepository.CreateSearchTerm(referenceName.name, referenceName.globalSearchTermType, ContentType.Core,
                     referenceName.pathOverride);
                 _globalSearchTermRepository.SearchTerms.Add(referenceSearchTerm);
             }
 
-            foreach (var variantRuleName in SectionNames.VariantRuleNames)
-            {
-                var variantRuleSearchTerm = _globalSearchTermRepository.CreateSearchTerm(variantRuleName.name, variantRuleName.globalSearchTermType, ContentType.Core,
-                    variantRuleName.pathOverride);
-                _globalSearchTermRepository.SearchTerms.Add(variantRuleSearchTerm);
-            }
+            //foreach (var variantRuleName in SectionNames.VariantRuleNames)
+            //{
+            //    var variantRuleSearchTerm = _globalSearchTermRepository.CreateSearchTerm(variantRuleName.name, variantRuleName.globalSearchTermType, ContentType.Core,
+            //        variantRuleName.pathOverride);
+            //    _globalSearchTermRepository.SearchTerms.Add(variantRuleSearchTerm);
+            //}
+
+            return powers;
         }
     }
 }

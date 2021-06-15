@@ -13,6 +13,7 @@ namespace StarWars5e.Models.Monster
             set => MonsterBehaviorTypeEnum = Enum.Parse<MonsterBehaviorType>(value);
         }
         public string Description { get; set; }
+        public string DescriptionWithLinks { get; set; }
         public AttackType AttackTypeEnum { get; set; }
         public string AttackType {
             get => AttackTypeEnum.ToString();

@@ -41,12 +41,14 @@ namespace StarWars5e.Parser.Processors.PHB
             {
                 var classTableLineSplit = classTableLine.Split('|');
 
-                var starWarsClass = new Class();
-                starWarsClass.Name = classTableLineSplit[1].Trim();
-                starWarsClass.Summary = classTableLineSplit[2].Trim();
-                starWarsClass.HitDiceDieTypeEnum = (DiceType)int.Parse(Regex.Match(classTableLineSplit[3], @"\d+").Value);
-                starWarsClass.PrimaryAbility = classTableLineSplit[4].Trim();
-                starWarsClass.SavingThrows = classTableLineSplit[5].Split('&').Select(s => s.Trim()).ToList();
+                var starWarsClass = new Class
+                {
+                    Name = classTableLineSplit[1].Trim(),
+                    Summary = classTableLineSplit[2].Trim(),
+                    HitDiceDieTypeEnum = (DiceType)int.Parse(Regex.Match(classTableLineSplit[3], @"\d+").Value),
+                    PrimaryAbility = classTableLineSplit[4].Trim(),
+                    SavingThrows = classTableLineSplit[5].Split('&').Select(s => s.Trim()).ToList()
+                };
 
                 var classLinesStart = lines.FindIndex(f => f.StartsWith($"## {starWarsClass.Name}"));
                 var nextClassName = classNames.ElementAtOrDefault(classNames.IndexOf(starWarsClass.Name) + 1);
@@ -61,7 +63,7 @@ namespace StarWars5e.Parser.Processors.PHB
                 {
                     foreach (var classImageLu in _classImageLus.Where(c => c.Class == starWarsClass.Name))
                     {
-                        starWarsClass.ImageUrls.Add(classImageLu.Url);
+                        starWarsClass.ImageUrls.Add(classImageLu.URL);
                     }
                 }
 
@@ -80,7 +82,7 @@ namespace StarWars5e.Parser.Processors.PHB
                     starWarsClass.CasterTypeEnum = casterRatio.CasterTypeEnum;
                 }
 
-                classes.Add(ParseClass(classLines, starWarsClass, ContentType.Core));
+                classes.Add(ParseClass(classLines.CleanListOfStrings().ToList(), starWarsClass, ContentType.Core));
             }
 
             return Task.FromResult(classes);
@@ -172,14 +174,24 @@ namespace StarWars5e.Parser.Processors.PHB
 
                 if (starWarsClass.SkillChoices != null)
                 {
-                    starWarsClass.SkillChoicesList = starWarsClass.SkillChoices.Split($"{Localization.from} ")[1]
-                        .Split(",")
-                        .Select(c =>
+                    if (starWarsClass.SkillChoices.Contains(Localization.ChooseAny, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        starWarsClass.SkillChoicesList = new List<string>
                         {
-                            c = c.RemoveWords(new []{Localization.and});
-                            return c.Trim();
-                        })
-                        .ToList();
+                            Localization.Any
+                        };
+                    }
+                    else
+                    {
+                        starWarsClass.SkillChoicesList = starWarsClass.SkillChoices.Split($"{Localization.from} ")[1]
+                            .Split(",")
+                            .Select(c =>
+                            {
+                                c = c.RemoveWords(new[] { Localization.and });
+                                return c.Trim();
+                            })
+                            .ToList();
+                    }
 
                     starWarsClass.NumSkillChoices = Regex.Match(starWarsClass.SkillChoices,
                             @$"{Localization.one}|{Localization.two}|{Localization.three}|{Localization.four}|{Localization.five}|{Localization.six}|{Localization.seven}|{Localization.eight}|{Localization.nine}")
@@ -196,8 +208,8 @@ namespace StarWars5e.Parser.Processors.PHB
                 starWarsClass.StartingWealthVariant = classLines.ElementAtOrDefault(variantWealthLine)?.Split('|')
                     .ElementAtOrDefault(2)?.Trim();
 
-                var classFeatureText = string.Join("\r\n", classLines.Skip(variantWealthLine + 1).ToList());
                 var archetypeStartLine = classLines.FindIndex(variantWealthLine, f => f.StartsWith("## "));
+                var classFeatureText = string.Join("\r\n", classLines.Skip(variantWealthLine + 1).Take(archetypeStartLine - (variantWealthLine + 1)).ToList());
 
                 starWarsClass.Features = ParseFeatures(classLines.Skip(variantWealthLine + 1).Take(archetypeStartLine - (variantWealthLine + 1)).ToList(), starWarsClass.Name, FeatureSource.Class, ContentType.Core);
                 starWarsClass.ClassFeatureText = classFeatureText;
@@ -242,10 +254,16 @@ namespace StarWars5e.Parser.Processors.PHB
                 archetypeStartingLines =
                     classArchetypeLines.FindAll(c => c.StartsWith("## ") && c.Contains(Localization.Pursuit));
             }
-            
-            foreach (var archetypeStartingLine in archetypeStartingLines)
+
+            for (var i = 0; i < archetypeStartingLines.Count; i++)
             {
-                var archetypeLines = GetArchetypeLines(classArchetypeLines, archetypeStartingLine);
+                var nextArchetype = string.Empty;
+
+                if (i != archetypeStartingLines.Count - 1)
+                {
+                    nextArchetype = archetypeStartingLines[i + 1];
+                }
+                var archetypeLines = GetArchetypeLines(classArchetypeLines, archetypeStartingLines[i], nextArchetype);
 
                 archetypes.Add(ParseArchetype(archetypeLines, starWarsClass, contentType));
             }
@@ -253,15 +271,20 @@ namespace StarWars5e.Parser.Processors.PHB
             return archetypes;
         }
 
-        private static List<string> GetArchetypeLines(List<string> lines, string archetypeStartLine)
+        private List<string> GetArchetypeLines(List<string> classArchetypeLines, string archetypeStartLine, string nextArchetype)
         {
-            var archetypeStartLineIndex = lines.FindIndex(f => f.Contains(archetypeStartLine));
-            var archetypeEndLine = lines.FindIndex(archetypeStartLineIndex + 1,
-                f => f.StartsWith("## "));
-            var archetypesLines = lines.Skip(archetypeStartLineIndex).ToList();
+            var archetypeStartLineIndex = classArchetypeLines.FindIndex(f => f.Contains(archetypeStartLine));
+
+            var archetypeEndLine = -1;
+            if (!string.IsNullOrWhiteSpace(nextArchetype))
+            {
+                archetypeEndLine = classArchetypeLines.FindIndex(archetypeStartLineIndex + 1, f => f == nextArchetype);
+            }
+
+            var archetypesLines = classArchetypeLines.Skip(archetypeStartLineIndex).ToList();
             if (archetypeEndLine != -1)
             {
-                archetypesLines = lines.Skip(archetypeStartLineIndex)
+                archetypesLines = classArchetypeLines.Skip(archetypeStartLineIndex)
                     .Take(archetypeEndLine - archetypeStartLineIndex).ToList();
             }
 
@@ -282,7 +305,8 @@ namespace StarWars5e.Parser.Processors.PHB
                     ClassName = starWarsClass.Name
                 };
 
-                var archetypeTableStart = archetypeLines.FindIndex(f => f.StartsWith("|"));
+                var archetypeTableStart = archetypeLines.FindIndex(f =>
+                    f.StartsWith("|") && f.Contains("level", StringComparison.InvariantCultureIgnoreCase));
                 if (archetypeTableStart != -1)
                 {
                     var archetypeTableEnd = archetypeLines.FindIndex(archetypeTableStart, f => f.Equals(string.Empty));
@@ -368,7 +392,7 @@ namespace StarWars5e.Parser.Processors.PHB
             }
         }
 
-        public static List<Feature> ParseFeatures(List<string> featureTextLines, string sourceName, FeatureSource featureSource, ContentType contentType)
+        public List<Feature> ParseFeatures(List<string> featureTextLines, string sourceName, FeatureSource featureSource, ContentType contentType)
         {
             var features = new List<Feature>();
 
@@ -384,18 +408,77 @@ namespace StarWars5e.Parser.Processors.PHB
                         .Take(nextFeatureNameLineIndex - currentFeatureNameLineIndex).RemoveEmptyLines().ToList();
 
                 var name = featureLines[0].Split("# ")[1].Trim();
-                var feature = new Feature
+                
+
+                var levels = GetFeatureLevels(featureLines.Skip(1).CleanListOfStrings().ToList());
+
+                foreach (var level in levels)
                 {
-                    Name = name,
-                    SourceEnum = featureSource,
-                    Text = string.Join("\r\n", featureLines.Skip(1).CleanListOfStrings()),
-                    PartitionKey = contentType.ToString(),
-                    RowKey = $"{featureSource}-{sourceName}-{name}".Replace("/", string.Empty).Replace(@"\", string.Empty)
-                };
-                features.Add(feature);
+                    var feature = new Feature
+                    {
+                        Name = name,
+                        SourceEnum = featureSource,
+                        Text = string.Join("\r\n", featureLines.Skip(1).CleanListOfStrings()),
+                        PartitionKey = contentType.ToString(),
+                        SourceName = sourceName,
+                        Level = level,
+                        RowKey = $"{featureSource}-{sourceName}-{name}-{level}".Replace("/", string.Empty)
+                            .Replace(@"\", string.Empty)
+                    };
+
+                    features.Add(feature);
+                }
             }
 
             return features;
+        }
+
+        private List<int> GetFeatureLevels(List<string> featureTextLines)
+        {
+            var featureLevels = new List<Tuple<string, int>>
+            {
+                Localization.FirstNum, Localization.SecondNum, Localization.ThirdNum,
+                Localization.FourthNum, Localization.FifthNum, Localization.SixthNum,
+                Localization.SeventhNum, Localization.EighthNum, Localization.NinthNum,
+                Localization.TenthNum, Localization.EleventhNum, Localization.TwelfthNum,
+                Localization.ThirteenthNum, Localization.FourteenthNum, Localization.FifteenthNum,
+                Localization.SixteenthNum, Localization.SeventeenthNum, Localization.EighteenthNum,
+                Localization.NineteenthNum, Localization.TwentiethNum
+            };
+
+            var levels = new List<int>();
+
+            var levelsTextSplit = featureTextLines[0].Split(',');
+
+            featureLevels.Reverse();
+
+            foreach (var levelSplit in levelsTextSplit)
+            {
+                var levelLine = featureLevels.FirstOrDefault(f => levelSplit.Contains(f.Item1));
+
+                if (levelLine != null)
+                {
+                    levels.Add(levelLine.Item2);
+                }
+            }
+
+            return levels;
+
+            //if (featureTextLines.Any())
+            //{
+            //    List<Tuple<string, int>> exists;
+            //    var i = 0;
+            //    do
+            //    {
+            //        exists = featureLevels.Where(f => featureTextLines[i].Contains(f.Item1)).ToList();
+            //        i++;
+            //    } while (i <= featureTextLines.Count - 1 && !exists.Any());
+
+            //    if (exists.Any())
+            //    {
+            //        return exists[0].Item2;
+            //    }
+            //}
         }
     }
 }

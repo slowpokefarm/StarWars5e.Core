@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using StarWars5e.Models.Enums;
+using Attribute = StarWars5e.Models.Enums.Attribute;
 
 namespace StarWars5e.Parser.Localization
 {
@@ -68,6 +70,7 @@ namespace StarWars5e.Parser.Localization
         public string legendary => "legendary";
         public string artifact => "artifact";
         public string adventuringgear => "adventuring gear";
+        public string AdventuringGear => "Adventuring Gear";
         public string body => "body";
         public string Feet => "Feet";
         public string Finger => "Finger";
@@ -163,24 +166,91 @@ namespace StarWars5e.Parser.Localization
         public string Scholar => "Scholar";
         public string Engineering => "Engineering";
         public string Pursuit => "Pursuit";
+        public string EnhancedItems => "Enhanced Items";
+        public string Monsters => "Monsters";
+        public string Classes => "Classes";
+        public string Species => "Species";
+        public string Archetypes => "Archetypes";
+        public string Backgrounds => "Backgrounds";
+        public string ForcePowers => "Force Powers";
+        public string TechPowers => "Tech Powers";
+        public string StarshipModifications => "Starship Modifications";
+        public string StarshipEquipment => "Starship Equipment";
+        public string StarshipWeapons => "Starship Weapons";
+        public string Ventures => "Ventures";
+        public string AdditionalVariantRules => "Additional Variant Rules";
+        public string MonsterManual => "Monster Manual";
+        public string WretchedHives => "Wretched Hives";
+        public string WretchedHivesChangelog => "Wretched Hives Changelog";
+        public string StarshipsOfTheGalaxy => "Starships Of The Galaxy";
+        public string StarshipsOfTheGalaxyChangelog => "Starships Of The Galaxy Changelog";
+        public string PlayersHandbook => "Player's Handbook";
+        public string PlayersHandbookChangelog => "Player's Handbook Changelog";
+        public string WeaponProperties => "Weapon Properties";
+        public string ArmorProperties => "Armor Properties";
+        public string Fighter => "Fighter";
+        public string ChooseAny => "Choose any";
+        public Tuple<string, int> FirstLevelNum => Tuple.Create("1st level", 1);
+        public Tuple<string, int>  SecondLevelNum => Tuple.Create("2nd level", 2);
+        public Tuple<string, int>  ThirdLevelNum => Tuple.Create("3rd level", 3);
+        public Tuple<string, int>  FourthLevelNum => Tuple.Create("4th level", 4);
+        public Tuple<string, int>  FifthLevelNum => Tuple.Create("5th level", 5);
+        public Tuple<string, int>  SixthLevelNum => Tuple.Create("6th level", 6);
+        public Tuple<string, int>  SeventhLevelNum => Tuple.Create("7th level", 7);
+        public Tuple<string, int>  EighthLevelNum => Tuple.Create("8th level", 8);
+        public Tuple<string, int>  NinthLevelNum => Tuple.Create("9th level", 9);
+        public Tuple<string, int>  TenthLevelNum => Tuple.Create("10th level", 10);
+        public Tuple<string, int>  EleventhLevelNum => Tuple.Create("11th level", 11);
+        public Tuple<string, int>  TwelfthLevelNum => Tuple.Create("12th level", 12);
+        public Tuple<string, int>  ThirteenthLevelNum => Tuple.Create("13th level", 13);
+        public Tuple<string, int>  FourteenthLevelNum => Tuple.Create("14th level", 14);
+        public Tuple<string, int>  FifteenthLevelNum => Tuple.Create("15th level", 15);
+        public Tuple<string, int>  SixteenthLevelNum => Tuple.Create("16th level", 16);
+        public Tuple<string, int>  SeventeenthLevelNum => Tuple.Create("17th level", 17);
+        public Tuple<string, int>  EighteenthLevelNum => Tuple.Create("18th level", 18);
+        public Tuple<string, int>  NineteenthLevelNum => Tuple.Create("19th level", 19);
+        public Tuple<string, int> TwentiethLevelNum => Tuple.Create("20th level", 20);
+        public Tuple<string, int> FirstNum => Tuple.Create("1st", 1);
+        public Tuple<string, int> SecondNum => Tuple.Create("2nd", 2);
+        public Tuple<string, int> ThirdNum => Tuple.Create("3rd", 3);
+        public Tuple<string, int> FourthNum => Tuple.Create("4th", 4);
+        public Tuple<string, int> FifthNum => Tuple.Create("5th", 5);
+        public Tuple<string, int> SixthNum => Tuple.Create("6th", 6);
+        public Tuple<string, int> SeventhNum => Tuple.Create("7th", 7);
+        public Tuple<string, int> EighthNum => Tuple.Create("8th", 8);
+        public Tuple<string, int> NinthNum => Tuple.Create("9th", 9);
+        public Tuple<string, int> TenthNum => Tuple.Create("10th", 10);
+        public Tuple<string, int> EleventhNum => Tuple.Create("11th", 11);
+        public Tuple<string, int> TwelfthNum => Tuple.Create("12th", 12);
+        public Tuple<string, int> ThirteenthNum => Tuple.Create("13th", 13);
+        public Tuple<string, int> FourteenthNum => Tuple.Create("14th", 14);
+        public Tuple<string, int> FifteenthNum => Tuple.Create("15th", 15);
+        public Tuple<string, int> SixteenthNum => Tuple.Create("16th", 16);
+        public Tuple<string, int> SeventeenthNum => Tuple.Create("17th", 17);
+        public Tuple<string, int> EighteenthNum => Tuple.Create("18th", 18);
+        public Tuple<string, int> NineteenthNum => Tuple.Create("19th", 19);
+        public Tuple<string, int> TwentiethNum => Tuple.Create("20th", 20);
+
         #endregion
 
         #region WretchedHivesManager
         public List<(string name, string startLine, int occurence)> WretchedHivesWeaponProperties => new List<(string name, string startLine, int occurence)>
         {
-            ("Auto", "#### Auto", 1),
+            ("Autotarget", "#### Autotarget", 1),
+            ("Brutal", "#### Brutal", 1),
             ("Defensive", "#### Defensive", 1),
             ("Dire", "#### Dire", 1),
             ("Disarming", "#### Disarming", 1),
-            ("Disguised", "#### Disguised", 1),
             ("Disintegrate", "#### Disintegrate", 1),
             ("Disruptive", "#### Disruptive", 1),
             ("Keen", "#### Keen", 1),
             ("Mighty", "#### Mighty", 1),
+            ("Neuralizing", "#### Neuralizing", 1),
             ("Piercing", "#### Piercing", 1),
-            ("Rapid", "#### Rapid", 1),
             ("Shocking", "#### Shocking", 1),
             ("Silent", "#### Silent", 2),
+            ("Sonorous", "#### Sonorous", 1),
+            ("Switch", "#### Switch", 1),
             ("Vicious", "#### Vicious", 1)
         };
         public List<(string name, string startLine, int occurence)> WretchedHivesArmorProperties => new List<(string name, string startLine, int occurence)>
@@ -203,6 +273,7 @@ namespace StarWars5e.Parser.Localization
             ("Magnetic", "#### Magnetic", 1),
             ("Obscured", "#### Obscured", 1),
             ("Powered", "#### Powered", 1),
+            ("Reactive", "#### Reactive", 1),
             ("Regulated", "#### Regulated", 1),
             ("Reinforced", "#### Reinforced", 1),
             ("Responsive", "#### Responsive", 1),
@@ -218,8 +289,10 @@ namespace StarWars5e.Parser.Localization
         public List<(string name, string startLine, int occurence)> PlayerHandbookWeaponProperties => new List<(string name, string startLine, int occurence)>
         {
             ("Ammunition", "#### Ammunition", 1),
+            ("Auto", "#### Auto", 1),
             ("Burst", "#### Burst", 1),
             ("Dexterity", "#### Dexterity", 1),
+            ("Disguised", "#### Disguised", 1),
             ("Double", "#### Double", 1),
             ("Finesse", "#### Finesse", 1),
             ("Fixed", "#### Fixed", 1),
@@ -228,6 +301,7 @@ namespace StarWars5e.Parser.Localization
             ("Light", "#### Light", 2),
             ("Luminous", "#### Luminous", 1),
             ("Range", "#### Range", 1),
+            ("Rapid", "#### Rapid", 1),
             ("Reach", "#### Reach", 1),
             ("Reload", "#### Reload", 1),
             ("Returning", "#### Returning", 1),
@@ -298,11 +372,13 @@ namespace StarWars5e.Parser.Localization
         #endregion
 
         #region PlayerHandbookEquipmentProcessor
-        public string PHBBlastersTableStart => "##### Blasters";
+        public string PHBSimpleBlastersTableStart => "_Simple Blasters_";
+        public string PHBMartialBlastersTableStart => "_Martial Blasters_";
+
         public string PHBVibroweaponsTableStart => "##### Vibroweapons";
         public string PHBLightweaponsTableStart => "##### Lightweapons";
         public string PHBArmorAndShieldsTableStart => "##### Armor and Shields";
-        public string PHBArtisansToolsTableStart => "_Artisan's tools_";
+        public string PHBArtisansImplementsTableStart => "_Artisan's implements_";
         public string PHBAmmunitionTableStart => "_Ammunition_";
         public string PHBMedicalTableStart => "_Medical_";
         #endregion
@@ -333,7 +409,7 @@ namespace StarWars5e.Parser.Localization
         public string ECSpeciesLanguage => "***Language***";
         public string ECSpeciesPrimaryLanguage => "***Primary Language***";
         public string ECSpeciesAbilityScoreIncrease => "Ability Score Increase";
-        public string ECSpeciesHalfHuman => "Half-Human";
+        public string ECSpeciesHalfHuman => "Half-human";
         #endregion
 
         #region StarshipChapterRulesProcessor
@@ -368,6 +444,7 @@ namespace StarWars5e.Parser.Localization
         public string SOTGVariantStart => "## Variant: Space Stations";
         public string SOTGModificationsStart => "## Engineering Systems";
         public string SOTGVenturesStart => "## Ventures";
+        public string SOTGVariantSpaceStations => "## Variant: Space Stations";
         #endregion
 
         #region StarshipDeploymentProcessor
@@ -378,13 +455,18 @@ namespace StarWars5e.Parser.Localization
         #region StarshipEquipmentProcessor
         public string SOTGArmorTableStartingLineArmorClass => "|Armor Class";
         public string SOTGArmorTableStartingLineShieldRegeneration => "|Shield Regeneration";
-        public string SOTGSmallWeaponsTableStartingLine => "##### Ship Weapons (Small)";
-        public string SOTGHugeWeaponsTableStartingLine => "##### Ship Weapons (Huge)";
-        public string SOTGAmmunitionTableStartingLine => "##### Ammunition";
+        public string SOTGSmallWeaponsTableStartingLine => "##### Ship Weapons (Tiny-Large)";
+        public string SOTGHugeWeaponsTableStartingLine => "##### Ship Weapons (Huge-Gargantuan)";
+        public string SOTGTertiaryAmmunitionTableStartingLine => "##### Tertiary Ammunition";
+        public string SOTGQuaternaryAmmunitionTableStartingLine => "##### Quaternary Ammunition";
+
         public string SOTGHyperdrivesTableStartingLine => "##### Hyperdrives";
         public string SOTGNavcomputerTableStartingLine => "##### Navcomputer";
         public string SOTGArmorTableArmorStartingLine => "_armor_";
         public string SOTGArmorTableShieldsStartingLine => "_shields_";
+        public string SOTGReactorsTableStartingLineFuelCosts => "|Fuel Costs";
+        public string SOTGReactorsTableReactorsStartingLine => "_Reactor_";
+        public string SOTGReactorsTablePowerCouplingsStartingLine => "_Power coupling_";
         #endregion
 
         #region StarshipModificationProcessor
@@ -454,6 +536,11 @@ namespace StarWars5e.Parser.Localization
         public string WHSpecialistsKitStartLine => "_Specialist's kit_";
         public string WHAmmunitionStartLine => "_Ammunition_";
         public string WHMedicalStartLine => "_Medical_";
+        public string WHAlcoholicBeveragesStartLine => "_Alcoholic beverages_";
+        public string WHDataRecordingAndStorageStartLine => "_Data Recording And Storage_";
+        public string WHExplosivesStartLine => "_Explosives_";
+        public string WHArtisansImplementsStartLine => "_Artisan's implements_";
+
         #endregion
 
         #region ExpandedContentArchetypeProcessor
@@ -482,6 +569,8 @@ namespace StarWars5e.Parser.Localization
         public string ECBlastersStartLine => "##### Blasters";
         public string ECMartialLightweaponsStartLine => "_Martial Lightweapons_";
         public string ECMartialVibroweaponsStartLine => "_Martial Vibroweapons_";
+        public string ECAmmunitionStartLine => "_Ammunition_";
+        public string ECStorageStartLine => "_Storage_";
         public string ECInterchangeableWeaponsSystemPattern => @"####\s+Interchangeable\s+Weapons\s+System";
         public string ECStrengthRequirementPattern => @"[,]*\s+?:([sS]trength\s+\d)";
         public string ECClassificationMartialBlasters => @"_\s*Martial\s*Blaster[s]?\s*_";
@@ -500,7 +589,7 @@ namespace StarWars5e.Parser.Localization
         public string ECClassificationLifeSupport => @"_\s*Life\s*Support\s*_";
         public string ECClassificationMedical => @"_\s*Medical\s*_";
         public string ECClassificationStorage => @"_\s*Storage\s*_";
-        public string ECClassificationArtisansTools => @"_\s*Artisan's\s*tools\s*_";
+        public string ECClassificationArtisansImplements => @"_\s*Artisan's\s*implements\s*_";
         public string ECClassificationGamingSet => @"_\s*Gaming\s*set\s*_";
         public string ECClassificationMusicalInstrument => @"_\s*Musical\s*instrument\s*_";
         public string ECClassificationSpecialistsKit => @"_\s*Specialist's\s*kit\s*_";
@@ -508,6 +597,9 @@ namespace StarWars5e.Parser.Localization
         public string ECClassificationMediumArmor => @"_\s*Medium\s*Armor\s*_";
         public string ECClassificationHeavyArmor => @"_\s*Heavy\s*Armor\s*_";
         public string ECClassificationShield => @"_\s*Shield\s*_";
+        public string ECClassificationAlcoholicBeverages => @"_\s*Alcoholic\s*beverages\s*_";
+        public string ECClassificationSpices => @"_\s*Spices\s*_";
+
         #endregion
 
         #region ExpandedContentForcePowersProcessor
@@ -522,6 +614,7 @@ namespace StarWars5e.Parser.Localization
         public string ECVariantRuleAdvancedAdvantage => "Advanced Advantage";
         public string ECVariantRuleLightsaberForms => "Lightsaber Forms";
         public string ECVariantRuleDismemberment => "Dismemberment";
+        public string ECVariantRuleCompoundAdvantage => "Compound Advantage";
         public string ECVariantRuleForceAlignmentStartingLetter => "T";
         public string ECVariantRuleDestinyStartingLetter => "D";
         public string ECVariantRuleStarshipDestinyStartingLetter => "S";
@@ -529,6 +622,7 @@ namespace StarWars5e.Parser.Localization
         public string ECVariantRuleAdvancedAdvantageStartingLetter => "T";
         public string ECVariantRuleLightsaberFormsStartingLetter => "T";
         public string ECVariantRuleDismembermentStartingLetter => "S";
+        public string ECVariantRuleCompoundAdvantageStartingLetter => "T";
         #endregion
 
         #region MonsterManualProcessor
@@ -550,7 +644,16 @@ namespace StarWars5e.Parser.Localization
         public string MonsterBehaviorActions => "Actions";
         public string MonsterBehaviorReactions => "Reactions";
         public string MonsterHitSplitPattern => @"\*Hit[:]*\*|Hit:";
-
+        public string AtWill => "At Will";
+        public string FirstLevel => "1st Level";
+        public string SecondLevel => "2nd Level";
+        public string ThirdLevel => "3rd Level";
+        public string FourthLevel => "4th Level";
+        public string FifthLevel => "5th Level";
+        public string SixthLevel => "6th Level";
+        public string SeventhLevel => "7th Level";
+        public string EighthLevel => "8th Level";
+        public string NinthLevel => "9th Level";
 
         #endregion
 
@@ -563,7 +666,7 @@ namespace StarWars5e.Parser.Localization
         public string ReferenceTableNameMulticlassingPrerequisites => "Multiclassing Prerequisites";
         public string ReferenceTableNameMulticlassingProficiencies => "Multiclassing Proficiencies";
         public string ReferenceTableNameStarshipSizeStockCost => "Starship Size Stock Cost";
-        public string ReferenceTableNameStarshipSizeConstructionWorkforce => "Starship Size Construction Workforce";
+        public string ReferenceTableNameStarshipSizeBuildingWorkforce => "Starship Size Building Workforce";
         public string ReferenceTableNameBaseUpgradeCostByTier => "Base Upgrade Cost by Tier";
         public string ReferenceTableNameStarshipSizeUpgradeCost => "Starship Size Upgrade Cost";
         public string ReferenceTableNameStarshipSizeUpgradeWorkforce => "Starship Size Upgrade Workforce";
@@ -593,44 +696,57 @@ namespace StarWars5e.Parser.Localization
         public string ReferenceTableNameStarshipSizeMaximumSuites => "Starship Size Maximum Suites";
         public string ReferenceTableNameStarshipSizeSuiteCapacity => "Starship Size Suite Capacity";
         public string ReferenceTableNameCyberneticAugmentationSideEffects => "Cybernetic Augmentation Side Effects";
+        public string ReferenceTableNameDeploymentRankPrestige => "Deployment Rank Prestige";
+        public string ReferenceTableNameModificationCapacityByShipSize => "Modification Capacity by Ship Size";
+        public string ReferenceTableNameModificationGradeInstallationByShipTier => "Modification Grade Installation by Ship Tier";
+        public string ReferenceTableNameBaseHyperspaceTravelTimes => "Base Hyperspace Travel Times (Hours)";
+        public string ReferenceTableNameStarshipSizeRefittingTime => "Starship Size Refitting Time";
+        public string ReferenceTableNameStarshipSlowedLevel => "Slowed Level";
         public string ReferenceTableStartingLineAbilityScorePointCost => "##### Ability Score Point Cost";
         public string ReferenceTableStartingLineAbilityScoresAndModifiers => "##### Ability Scores and Modifiers";
         public string ReferenceTableStartingLineXPByLevel => "|Experience Points|Level|Proficiency Bonus|";
-        public string ReferenceTableStartingLineStartingWealthByClass => "#### Variant: Starting Wealth by Class";
+        public string ReferenceTableStartingLineStartingWealthByClass => "##### Variant: Starting Wealth by Class";
         public string ReferenceTableStartingLineLifestyleExpenses => "##### Lifestyle Expenses";
-        public string ReferenceTableStartingLineMulticlassingPrerequisites => "#### Multiclassing Prerequisites";
-        public string ReferenceTableStartingLineMulticlassingProficiencies => "### Multiclassing Proficiencies";
-        public string ReferenceTableStartingLineStarshipSizeStockCost => "#### Starship Size Stock Cost";
-        public string ReferenceTableStartingLineStarshipSizeConstructionWorkforce => "#### Starship Size Construction Workforce";
-        public string ReferenceTableStartingLineBaseUpgradeCostByTier => "#### Base Upgrade Cost by Tier";
-        public string ReferenceTableStartingLineStarshipSizeUpgradeCost => "#### Starship Size Upgrade Cost";
-        public string ReferenceTableStartingLineStarshipSizeUpgradeWorkforce => "#### Starship Size Upgrade Workforce";
-        public string ReferenceTableStartingLineModificationCategoryBaseCost => "#### Modification Category Base Cost";
-        public string ReferenceTableStartingLineStarshipSizeModificationCost => "#### Starship Size Modification Cost";
-        public string ReferenceTableStartingLineStarshipSizeModificationWorkforce => "#### Starship Size Modification Workforce";
+        public string ReferenceTableStartingLineMulticlassingPrerequisites => "##### Multiclassing Prerequisites";
+        public string ReferenceTableStartingLineMulticlassingProficiencies => "##### Multiclassing Proficiencies";
+        public string ReferenceTableStartingLineStarshipSizeStockCost => "##### Starship Size Stock Cost";
+        public string ReferenceTableStartingLineStarshipSizeBuildingWorkforce => "##### Starship Size Building Workforce";
+        public string ReferenceTableStartingLineBaseUpgradeCostByTier => "##### Base Upgrade Cost by Tier";
+        public string ReferenceTableStartingLineStarshipSizeUpgradeCost => "##### Starship Size Upgrade Cost";
+        public string ReferenceTableStartingLineStarshipSizeUpgradeWorkforce => "##### Starship Size Upgrade Workforce";
+        public string ReferenceTableStartingLineModificationCategoryBaseCost => "##### Modification Category Base Cost";
+        public string ReferenceTableStartingLineStarshipSizeModificationCost => "##### Starship Size Modification Cost";
+        public string ReferenceTableStartingLineStarshipSizeModificationWorkforce => "##### Starship Size Modification Workforce";
         public string ReferenceTableStartingLineModificationTierRequirementDC => "#### Modification Tier Requirement DC";
         public string ReferenceTableStartingLineModificationSlotsAtTierZero => "### Modification Slots at  Tier 0";
-        public string ReferenceTableStartingLineStarshipSizeEquipmentCost => "#### Starship Size Equipment Cost";
-        public string ReferenceTableStartingLineStarshipSizeEquipmentWorkforce => "#### Starship Size Equipment Workforce";
-        public string ReferenceTableStartingLineStarshipSizeCargoCapacity => "#### Starship Size Cargo Capacity";
+        public string ReferenceTableStartingLineStarshipSizeEquipmentCost => "##### Starship Size Equipment Cost";
+        public string ReferenceTableStartingLineStarshipSizeEquipmentWorkforce => "##### Starship Size Equipment Workforce";
+        public string ReferenceTableStartingLineStarshipSizeCargoCapacity => "##### Starship Size Cargo Capacity";
         public string ReferenceTableStartingLineStarshipSizeBaseArmorClass => "#### Starship Size Base Armor Class";
-        public string ReferenceTableStartingLineStarshipSizeFuelCost => "#### Starship Size Fuel Cost";
-        public string ReferenceTableStartingLineStarshipSizeFuelCapacity => "#### Starship Size Fuel Capacity";
-        public string ReferenceTableStartingLineStarshipSizeFoodCapacity => "#### Starship Size Food Capacity";
+        public string ReferenceTableStartingLineStarshipSizeFuelCost => "##### Starship Size Fuel Cost";
+        public string ReferenceTableStartingLineStarshipSizeFuelCapacity => "##### Starship Size Fuel Capacity";
+        public string ReferenceTableStartingLineStarshipSizeFoodCapacity => "##### Starship Size Food Capacity";
         public string ReferenceTableStartingLineStarshipSizeBaseFlyingSpeed => "#### Starship Size Base Flying Speed";
         public string ReferenceTableStartingLineStarshipSizeBaseTurningSpeed => "#### Starship Size Base Turning Speed";
         public string ReferenceTableStartingLineSampleRealspaceTravelTimes => "#### Sample Realspace Travel Times";
         public string ReferenceTableStartingLineSampleHyperspaceTravelTimes => "#### Sample Hyperspace Travel Times";
         public string ReferenceTableStartingLineAstrogationTimeTaken => "#### Astrogation Time Taken";
-        public string ReferenceTableStartingLineHyperspaceMishaps => "#### Hyperspace Mishaps";
-        public string ReferenceTableStartingLineStarshipSizeMinimumCrew => "#### Starship Size Minimum Crew";
+        public string ReferenceTableStartingLineHyperspaceMishaps => "##### Hyperspace Mishaps";
+        public string ReferenceTableStartingLineStarshipSizeMinimumCrew => "##### Starship Size Minimum Crew";
         public string ReferenceTableStartingLineStarshipSizeRepairTime => "#### Starship Size Repair Time";
         public string ReferenceTableStartingLineStarshipSizeMaintenanceTime => "#### Starship Size Maintenance Time";
         public string ReferenceTableStartingLineStarshipSizeCategories => "#### Size Categories";
         public string ReferenceTableStartingLineSystemDamage => "#### System Damage";
-        public string ReferenceTableStartingLineStarshipSizeMaximumSuites => "#### Starship Size Maximum Suites";
-        public string ReferenceTableStartingLineStarshipSizeSuiteCapacity => "#### Starship Size Suite Capacity";
+        public string ReferenceTableStartingLineStarshipSizeMaximumSuites => "##### Starship Size Maximum Suites";
+        public string ReferenceTableStartingLineStarshipSizeSuiteCapacity => "##### Starship Size Suite Capacity";
         public string ReferenceTableStartingLineCyberneticAugmentationSideEffects => "#### Cybernetic Augmentation Side Effects";
+        public string ReferenceTableStartingLineDeploymentRankPrestige => "##### Deployment Rank Prestige";
+        public string ReferenceTableStartingLineModificationCapacityByShipSize => "#### Modification Capacity by Ship Size";
+        public string ReferenceTableStartingLineModificationGradeInstallationByShipTier => "##### Modification Grade Installation by Ship Tier";
+        public string ReferenceTableStartingLineBaseHyperspaceTravelTimes => "##### Base Hyperspace Travel Times (Hours)";
+        public string ReferenceTableStartingLineStarshipSizeRefittingTime => "#### Starship Size Refitting Time";
+        public string ReferenceTableStartingLineStarshipSlowedLevel => "##### Slowed Level";
+
 
         #endregion
     }

@@ -3,34 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
+using Azure.Search.Documents.Indexes;
+using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using StarWars5e.Models;
 using StarWars5e.Models.Enums;
 using StarWars5e.Parser.Localization;
 using StarWars5e.Parser.Managers;
-using Wolnik.Azure.TableStorage.Repository;
+using StarWars5e.Parser.Storage;
 
 namespace StarWars5e.Parser
 {
     public static class ParseContent
     {
-        public static async Task Parse(ITableStorage azureTableStorage, CloudStorageAccount cloudStorageAccount,
+        public static async Task Parse(IServiceProvider serviceProvider, IAzureTableStorage azureTableStorage,
             GlobalSearchTermRepository globalSearchTermRepository, ILocalization localization)
         {
-            var starshipManager = new StarshipsOfTheGalaxyManager(azureTableStorage, cloudStorageAccount,
-                globalSearchTermRepository, localization);
+            var configuration = serviceProvider.GetService<IConfiguration>();
+
+            var playerHandbookManager = new PlayerHandbookManager(serviceProvider, localization);
+            var wretchedHivesManager = new WretchedHivesManager(serviceProvider, localization);
+            var starshipManager = new StarshipsOfTheGalaxyManager(serviceProvider, localization);
             var monsterManualManager =
                 new MonsterManualManager(azureTableStorage, globalSearchTermRepository, localization);
             var extendedContentSpeciesManager =
-                new ExpandedContentSpeciesManager(azureTableStorage, globalSearchTermRepository, localization);
+                new ExpandedContentSpeciesManager(serviceProvider, localization);
             var extendedContentBackgroundManager =
                 new ExpandedContentBackgroundsManager(azureTableStorage, globalSearchTermRepository, localization);
             var extendedContentEquipmentManager =
                 new ExpandedContentEquipmentManager(azureTableStorage, globalSearchTermRepository, localization);
             var extendedContentArchetypesManager =
-                new ExpandedContentArchetypesManager(azureTableStorage, globalSearchTermRepository, localization);
+                new ExpandedContentArchetypesManager(serviceProvider, localization);
             var extendedContentVariantRulesManager =
-                new ExpandedContentVariantRulesManager(cloudStorageAccount, localization);
+                new ExpandedContentVariantRulesManager(serviceProvider, localization);
+            var expandedContentManager =
+                new ExpandedContentManager(serviceProvider, localization);
             var extendedContentCustomizationOptionsManager =
                 new ExpandedContentCustomizationOptionsManager(azureTableStorage, globalSearchTermRepository,
                     localization);
@@ -38,35 +46,37 @@ namespace StarWars5e.Parser
                 new ExpandedContentForcePowersManager(azureTableStorage, globalSearchTermRepository, localization);
             var extendedContentTechPowersManager =
                 new ExpandedContentTechPowersManager(azureTableStorage, globalSearchTermRepository, localization);
-            var playerHandbookManager = new PlayerHandbookManager(azureTableStorage, cloudStorageAccount,
-                globalSearchTermRepository, localization);
             var referenceTableManager = new ReferenceTableManager(azureTableStorage, localization);
-            var wretchedHivesManager = new WretchedHivesManager(azureTableStorage, cloudStorageAccount,
-                globalSearchTermRepository, localization);
-            var creditsManager = new CreditsManager(cloudStorageAccount, localization);
+            var creditsManager = new CreditsManager(serviceProvider, localization);
             var extendedContentEnhancedItemManager =
                 new ExpandedContentEnhancedItemsManager(azureTableStorage, globalSearchTermRepository, localization);
 
             var referenceTables = await referenceTableManager.Parse();
+            var powers = await playerHandbookManager.Parse();
+            powers.AddRange(await extendedContentTechPowersManager.Parse());
+            powers.AddRange(await extendedContentForcePowersManager.Parse());
+            await wretchedHivesManager.Parse();
             await starshipManager.Parse(referenceTables);
-            await monsterManualManager.Parse();
+            await monsterManualManager.Parse(powers);
             await extendedContentSpeciesManager.Parse();
             await extendedContentBackgroundManager.Parse();
             await extendedContentEquipmentManager.Parse();
             await extendedContentArchetypesManager.Parse();
             await extendedContentVariantRulesManager.Parse();
+            await expandedContentManager.Parse();
             await extendedContentCustomizationOptionsManager.Parse();
-            await extendedContentTechPowersManager.Parse();
-            await extendedContentForcePowersManager.Parse();
-            await wretchedHivesManager.Parse();
-            await playerHandbookManager.Parse();
             await creditsManager.Parse();
             await extendedContentEnhancedItemManager.Parse();
 
             try
             {
-                var searchManager = new SearchManager(azureTableStorage, globalSearchTermRepository);
-                await searchManager.Upload();
+                var searchServiceClient = serviceProvider.GetService<SearchIndexClient>();
+
+                if (searchServiceClient != null)
+                {
+                    var searchManager = new SearchManager(serviceProvider, localization);
+                    await searchManager.Upload();
+                }
             }
             catch (StorageException)
             {
@@ -92,6 +102,26 @@ namespace StarWars5e.Parser
 
             try
             {
+                var features = serviceProvider.GetService<FeatureRepository>()?.Features;
+                var sheetOperations = new SheetOperations(serviceProvider);
+
+                if (features != null && serviceProvider.GetService<IConfiguration>()?["FeaturesSheetId"] != null &&
+                    configuration != null &&
+                    configuration["FeatureLanguages"].Split(',').Contains(localization.Language.ToString()))
+                {
+                    var featureSheetData = features.Select(c => new List<object> {c.RowKey, c.Level} as IList<object>)
+                        .ToList();
+                    await sheetOperations.UpdateFeatureSheetAsync(featureSheetData);
+                    Console.WriteLine("Successfully wrote features to Features Parsed sheet.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Failed to write features to sheet.");
+            }
+
+            try
+            {
                 var currentVersion =
                     (await azureTableStorage.GetAsync<DataVersion>($"dataVersion{localization.Language}", ContentType.Core.ToString(),
                         "MASTERVERSION"))?.Version;
@@ -99,12 +129,11 @@ namespace StarWars5e.Parser
                 var dataNames = new List<string>
                 {
                     "MASTERVERSION", "archetypes", "armorProperties", "backgrounds", "classes", "credits",
-                    "enhancedItems", "equipment",
-                    "feats", "features", "monsters", "powers", "referenceTables", "species", "starshipBaseSizes",
-                    "starshipDeployments", "starshipEquipment", "starshipModifications", "starshipVentures",
-                    "weaponProperties",
+                    "enhancedItems", "equipment", "feats", "features", "monsters", "powers", "referenceTables", "species", "starshipBaseSizes",
+                    "starshipDeployments", "starshipEquipment", "starshipModifications", "starshipVentures", "weaponProperties",
                     "player-handbook-rules", "starships-rules", "variant-rules", "wretched-hives-rules",
-                    "characterAdvancementLU", "conditionsLU", "featureDataLU", "featureLevelLU", "skillsLU"
+                    "characterAdvancementLU", "conditionsLU", "featureDataLU", "featureLevelLU", "skillsLU", "fightingStyle",
+                    "fightingMastery", "expanded-content"
                 };
                 var dataVersions = dataNames.Select(d => new DataVersion
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using StarWars5e.Models;
 using StarWars5e.Models.Enums;
 using StarWars5e.Models.Lookup;
 using StarWars5e.Models.Monster;
@@ -30,9 +31,10 @@ namespace StarWars5e.Parser.Processors
 
             for (var i = 0; i < lines.Count; i++)
             {
-                if (!lines[i].StartsWith("> ## ") && !lines[i].StartsWith(">## ")) continue;
-                
-                var speciesEndIndex = lines.FindIndex(i + 1, f => f.StartsWith("> ## ") || f.StartsWith(">## "));
+                if (!Regex.IsMatch(lines[i], @"^>\s*##\s+")) continue;
+
+                //var speciesEndIndex = lines.FindIndex(i + 1, f => f.StartsWith("> ## ") || f.StartsWith(">## ") || f.start);
+                var speciesEndIndex = lines.FindIndex(i + 1, f => Regex.IsMatch(f, @"^>\s*##\s+"));
                 var speciesLines = lines.Skip(i).CleanListOfStrings().ToList();
                 if (speciesEndIndex != -1)
                 {
@@ -47,7 +49,7 @@ namespace StarWars5e.Parser.Processors
 
         public Species ParseSpecies(List<string> speciesLines, ContentType contentType)
         {
-            var name = speciesLines.Find(f => f.StartsWith("> ## ") || f.StartsWith(">## ")).Split("## ")[1].Trim().RemoveMarkdownCharacters();
+            var name = speciesLines.Find(f => Regex.IsMatch(f, @"^>\s*##\s+")).Split("## ")[1].Trim().RemoveMarkdownCharacters();
             try
             {
                 var species = new Species
@@ -107,6 +109,20 @@ namespace StarWars5e.Parser.Processors
                     trait.Name = traitLine.Split(asterisks.Value)[1].Trim().Replace(".", string.Empty);
                     trait.Description = traitLine.Split(asterisks.Value)[2].Trim().RemoveHtmlWhitespace();
                     species.Traits.Add(trait);
+                }
+
+                foreach (var speciesTrait in species.Traits)
+                {
+                    var feature = new Feature
+                    {
+                        Name = speciesTrait.Name,
+                        Text = speciesTrait.Description,
+                        RowKey = $"{FeatureSource.Species}-{name}-{speciesTrait.Name}",
+                        SourceName = name,
+                        SourceEnum = FeatureSource.Species,
+                        PartitionKey = contentType.ToString()
+                    };
+                    species.Features.Add(feature);
                 }
 
                 var sizeTrait = species.Traits.SingleOrDefault(t => t.Name == Localization.Size);
@@ -289,7 +305,7 @@ namespace StarWars5e.Parser.Processors
                     }
                 }
 
-                if (name == Localization.ECSpeciesHalfHuman)
+                if (name.Equals(Localization.ECSpeciesHalfHuman, StringComparison.InvariantCultureIgnoreCase))
                 {
                     var tableLines = speciesLines.Where(c => Regex.IsMatch(c, @"^>\s*\|[A-Za-z]+")).ToList();
 
@@ -302,7 +318,7 @@ namespace StarWars5e.Parser.Processors
                     }
                 }
 
-                species.ImageUrls = _speciesImageUrlLus.Where(s => s.Specie == name).Select(s => s.Url).ToList();
+                species.ImageUrls = _speciesImageUrlLus.Where(s => s.Specie.Equals(name, StringComparison.InvariantCultureIgnoreCase)).Select(s => s.Url).ToList();
 
                 return species;
             }

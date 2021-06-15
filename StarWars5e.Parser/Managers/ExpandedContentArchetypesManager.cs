@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
+using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Extensions.DependencyInjection;
 using StarWars5e.Models;
 using StarWars5e.Models.Class;
 using StarWars5e.Models.Enums;
 using StarWars5e.Models.Lookup;
 using StarWars5e.Parser.Localization;
 using StarWars5e.Parser.Processors;
-using Wolnik.Azure.TableStorage.Repository;
+using StarWars5e.Parser.Storage;
 
 namespace StarWars5e.Parser.Managers
 {
     public class ExpandedContentArchetypesManager
     {
-        private readonly ITableStorage _tableStorage;
+        private readonly IAzureTableStorage _tableStorage;
         private readonly GlobalSearchTermRepository _globalSearchTermRepository;
-        private readonly List<string> _ecArchetypesFileName = new List<string> { "ec_archetypes.txt" };
+        private readonly List<string> _ecArchetypesFileName = new() { "ec_03.txt" };
         private readonly ILocalization _localization;
+        private readonly FeatureRepository _featureRepository;
 
-        public ExpandedContentArchetypesManager(ITableStorage tableStorage, GlobalSearchTermRepository globalSearchTermRepository, ILocalization localization)
+        public ExpandedContentArchetypesManager(IServiceProvider serviceProvider, ILocalization localization)
         {
-            _tableStorage = tableStorage;
-            _globalSearchTermRepository = globalSearchTermRepository;
+            _tableStorage = serviceProvider.GetService<IAzureTableStorage>();
+            _globalSearchTermRepository = serviceProvider.GetService<GlobalSearchTermRepository>();
             _localization = localization;
+            _featureRepository = serviceProvider.GetService<FeatureRepository>();
         }
 
         public async Task Parse()
@@ -52,17 +55,6 @@ namespace StarWars5e.Parser.Managers
                 {
                     var archetypeFeatures = archetypes.SelectMany(f => f.Features).ToList();
 
-                    var featureLevels = (await _tableStorage.GetAllAsync<FeatureDataLU>("featureDataLU")).ToList();
-
-                    foreach (var archetypeFeature in archetypeFeatures)
-                    {
-                        var featureLevel = featureLevels.SingleOrDefault(f => f.FeatureRowKey == archetypeFeature.RowKey);
-                        if (featureLevel != null)
-                        {
-                            archetypeFeature.Level = featureLevel.Level;
-                        }
-                    }
-
                     var dupes = archetypeFeatures
                         .GroupBy(i => i.RowKey)
                         .Where(g => g.Count() > 1)
@@ -70,6 +62,8 @@ namespace StarWars5e.Parser.Managers
 
                     await _tableStorage.AddBatchAsync<Feature>($"features{_localization.Language}", archetypeFeatures,
                         new BatchOperationOptions { BatchInsertMethod = BatchInsertMethod.InsertOrReplace });
+
+                    _featureRepository.Features.AddRange(archetypeFeatures);
                 }
                 catch (StorageException se)
                 {

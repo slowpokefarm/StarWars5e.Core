@@ -25,6 +25,8 @@ namespace StarWars5e.Parser.Processors
             equipment.AddRange(await ParseWeapons(lines, Localization.ECBlastersStartLine, false, 1, ContentType.ExpandedContent));
             equipment.AddRange(await ParseWeapons(lines, Localization.ECMartialLightweaponsStartLine, true, 1, ContentType.ExpandedContent));
             equipment.AddRange(await ParseWeapons(lines, Localization.ECMartialVibroweaponsStartLine, true, 1, ContentType.ExpandedContent));
+            equipment.AddRange(await ParseOtherEquipment(lines, Localization.ECAmmunitionStartLine, true, 1, ContentType.ExpandedContent));
+            equipment.AddRange(await ParseOtherEquipment(lines, Localization.ECStorageStartLine, true, 1, ContentType.ExpandedContent));
 
             return equipment;
         }
@@ -33,7 +35,6 @@ namespace StarWars5e.Parser.Processors
         {
             var equipmentList = new List<Equipment>();
             List<string> tableLines;
-
 
             if (tableNameIsStartingCategory)
             {
@@ -64,13 +65,13 @@ namespace StarWars5e.Parser.Processors
                         PartitionKey = contentType.ToString()
                     };
 
-                    var weightMatch = Regex.Match(tableLineSplit[4], @"\d+/*\d*");
+                    var weightMatch = Regex.Match(tableLineSplit[4], @"\d+\s*\d*\/*\d*");
                     weapon.Name = tableLineSplit[1].RemoveHtmlWhitespace().Trim();
                     weapon.RowKey = weapon.Name;
                     try
                     {
-                        weapon.Weight = weightMatch.Success ? weightMatch.Value : "0";
-                        weapon.Properties = tableLineSplit[5].Split(',').Select(s => s.Trim().RemoveHtmlWhitespace().RemovePlaceholderCharacter())
+                        weapon.Weight = weightMatch.Success ? weightMatch.Value.Trim() : "0";
+                        weapon.Properties = Regex.Split(tableLineSplit[5], @",\s*(?![^()]*\))").Select(s => s.Trim().RemoveHtmlWhitespace().RemovePlaceholderCharacter())
                             .Where(p => !string.IsNullOrWhiteSpace(p))
                             .ToList();
                         weapon.PropertiesMap = weapon.Properties.ToDictionary(
@@ -177,8 +178,8 @@ namespace StarWars5e.Parser.Processors
                                 ? equipmentCategory
                                 : EquipmentCategory.Unknown;
 
-                        var weightMatch = Regex.Match(otherEquipmentTableLineSplit[3], @"\d+/*\d*");
-                        otherEquipment.Weight = weightMatch.Success ? weightMatch.Value : "0";
+                        var weightMatch = Regex.Match(otherEquipmentTableLineSplit[3], @"\d+\s*\d*\/*\d*");
+                        otherEquipment.Weight = weightMatch.Success ? weightMatch.Value.Trim() : "0";
 
                         var otherEquipmentDescriptionStartLine =
                             lines.FindIndex(f =>
@@ -250,8 +251,8 @@ namespace StarWars5e.Parser.Processors
                             ? int.Parse(costMatch.Value, NumberStyles.AllowThousands)
                             : 0;
 
-                        var weightMatch = Regex.Match(tableLineSplit[4], @"\d+/*\d*");
-                        armor.Weight = weightMatch.Success ? weightMatch.Value : "0";
+                        var weightMatch = Regex.Match(tableLineSplit[4], @"\d+\s*\d*\/*\d*");
+                        armor.Weight = weightMatch.Success ? weightMatch.Value.Trim() : "0";
                         armor.Properties = tableLineSplit[5].Split(',').Select(s => s.Trim().RemoveHtmlWhitespace().RemovePlaceholderCharacter())
                             .Where(p => !string.IsNullOrWhiteSpace(p))
                             .ToList();
@@ -366,7 +367,7 @@ namespace StarWars5e.Parser.Processors
             {
                 return EquipmentCategory.Storage;
             }
-            if (Regex.IsMatch(equipmentCategoryLine, Localization.ECClassificationArtisansTools, RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(equipmentCategoryLine, Localization.ECClassificationArtisansImplements, RegexOptions.IgnoreCase))
             {
                 return EquipmentCategory.Tool;
             }
@@ -381,6 +382,14 @@ namespace StarWars5e.Parser.Processors
             if (Regex.IsMatch(equipmentCategoryLine, Localization.ECClassificationSpecialistsKit, RegexOptions.IgnoreCase))
             {
                 return EquipmentCategory.Kit;
+            }
+            if (Regex.IsMatch(equipmentCategoryLine, Localization.ECClassificationAlcoholicBeverages, RegexOptions.IgnoreCase))
+            {
+                return EquipmentCategory.AlcoholicBeverage;
+            }
+            if (Regex.IsMatch(equipmentCategoryLine, Localization.ECClassificationSpices, RegexOptions.IgnoreCase))
+            {
+                return EquipmentCategory.Spice;
             }
 
             return EquipmentCategory.Unknown;

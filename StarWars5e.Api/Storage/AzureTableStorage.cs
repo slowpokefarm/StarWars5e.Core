@@ -3,8 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace StarWars5e.Api.Storage
 {
@@ -137,9 +136,9 @@ namespace StarWars5e.Api.Storage
         {
             var table = await EnsureTable(tableName).ConfigureAwait(false);
 
-            options = options ?? new BatchOperationOptions();
+            options ??= new BatchOperationOptions();
 
-            var tasks = new List<Task<IList<TableResult>>>();
+            var tasks = new List<Task<TableBatchResult>>();
 
             const int addBatchOperationLimit = 100;
             var entitiesOffset = 0;

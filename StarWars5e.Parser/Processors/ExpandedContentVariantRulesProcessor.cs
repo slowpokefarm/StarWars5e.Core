@@ -16,9 +16,9 @@ namespace StarWars5e.Parser.Processors
 
             for (var i = 0; i < lines.Count; i++)
             {
-                if (!lines[i].StartsWith("# ")) continue;
+                if (!lines[i].StartsWith("## ")) continue;
 
-                var variantEndIndex = lines.FindIndex(i + 1, f => f.StartsWith("# "));
+                var variantEndIndex = lines.FindIndex(i + 1, f => f.StartsWith("## "));
                 var variantLines = lines.Skip(i).CleanListOfStrings().ToList();
                 if (variantEndIndex != -1)
                 {
@@ -34,7 +34,7 @@ namespace StarWars5e.Parser.Processors
         public ChapterRules ParseVariantRules(List<string> variantLines, ContentType contentType)
         {
             var variantRule = new ChapterRules();
-            var name = variantLines[0].Split('#')[1].Trim();
+            var name = variantLines[0].Split("##")[1].Trim();
             try
             {
                 if (name == Localization.ECVariantRuleForceAlignment)
@@ -64,6 +64,10 @@ namespace StarWars5e.Parser.Processors
                 if (name == Localization.ECVariantRuleDismemberment)
                 {
                     variantLines[2] = variantLines[2].Insert(0, Localization.ECVariantRuleDismembermentStartingLetter);
+                }
+                if (name == Localization.ECVariantRuleCompoundAdvantage)
+                {
+                    variantLines[2] = variantLines[2].Insert(0, Localization.ECVariantRuleCompoundAdvantageStartingLetter);
                 }
 
                 variantRule.ChapterName = name;

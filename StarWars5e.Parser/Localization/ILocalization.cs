@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using StarWars5e.Models.Enums;
 
 namespace StarWars5e.Parser.Localization
@@ -68,6 +69,7 @@ namespace StarWars5e.Parser.Localization
         public string legendary { get; }
         public string artifact { get; }
         public string adventuringgear { get; }
+        public string AdventuringGear { get; }
         public string body { get; }
         public string Feet { get; }
         public string Finger { get; }
@@ -163,8 +165,30 @@ namespace StarWars5e.Parser.Localization
         public string Scholar { get; }
         public string Engineering { get; }
         public string Pursuit { get; }
-
-
+        public string EnhancedItems { get; }
+        public string Monsters { get; }
+        public string Classes { get; }
+        public string Species { get; }
+        public string Archetypes { get; }
+        public string Backgrounds { get; }
+        public string ForcePowers { get; }
+        public string TechPowers { get; }
+        public string StarshipModifications { get; }
+        public string StarshipEquipment { get; }
+        public string StarshipWeapons { get; }
+        public string Ventures { get; }
+        public string AdditionalVariantRules { get; }
+        public string MonsterManual { get; }
+        public string WretchedHives { get; }
+        public string WretchedHivesChangelog { get; }
+        public string StarshipsOfTheGalaxy { get; }
+        public string StarshipsOfTheGalaxyChangelog { get; }
+        public string PlayersHandbook { get; }
+        public string PlayersHandbookChangelog { get; }
+        public string WeaponProperties { get; }
+        public string ArmorProperties { get; }
+        public string Fighter { get; }
+        public string ChooseAny { get; }
         #endregion
 
         #region WretchedHivesManager
@@ -231,11 +255,13 @@ namespace StarWars5e.Parser.Localization
         #endregion
 
         #region PlayerHandbookEquipmentProcessor
-        public string PHBBlastersTableStart { get; }
+        public string PHBSimpleBlastersTableStart { get; }
+        public string PHBMartialBlastersTableStart { get; }
+
         public string PHBVibroweaponsTableStart { get; }
         public string PHBLightweaponsTableStart { get; }
         public string PHBArmorAndShieldsTableStart { get; }
-        public string PHBArtisansToolsTableStart { get; }
+        public string PHBArtisansImplementsTableStart { get; }
         public string PHBAmmunitionTableStart { get; }
         public string PHBMedicalTableStart { get; }
         #endregion
@@ -298,6 +324,7 @@ namespace StarWars5e.Parser.Localization
         public string SOTGVariantStart { get; }
         public string SOTGModificationsStart { get; }
         public string SOTGVenturesStart { get; }
+        public string SOTGVariantSpaceStations { get; }
         #endregion
 
         #region StarshipDeploymentProcessor
@@ -310,11 +337,16 @@ namespace StarWars5e.Parser.Localization
         public string SOTGArmorTableStartingLineShieldRegeneration { get; }
         public string SOTGSmallWeaponsTableStartingLine { get; }
         public string SOTGHugeWeaponsTableStartingLine { get; }
-        public string SOTGAmmunitionTableStartingLine { get; }
+        public string SOTGTertiaryAmmunitionTableStartingLine { get; }
+        public string SOTGQuaternaryAmmunitionTableStartingLine { get; }
+
         public string SOTGHyperdrivesTableStartingLine { get; }
         public string SOTGNavcomputerTableStartingLine { get; }
         public string SOTGArmorTableArmorStartingLine { get; }
         public string SOTGArmorTableShieldsStartingLine { get; }
+        public string SOTGReactorsTableStartingLineFuelCosts { get; }
+        public string SOTGReactorsTableReactorsStartingLine { get; }
+        public string SOTGReactorsTablePowerCouplingsStartingLine { get; }
         #endregion
 
         #region StarshipModificationProcessor
@@ -383,6 +415,11 @@ namespace StarWars5e.Parser.Localization
         public string WHSpecialistsKitStartLine { get; }
         public string WHAmmunitionStartLine { get; }
         public string WHMedicalStartLine { get; }
+        public string WHAlcoholicBeveragesStartLine { get; }
+        public string WHDataRecordingAndStorageStartLine { get; }
+        public string WHExplosivesStartLine { get; }
+        public string WHArtisansImplementsStartLine { get; }
+
         #endregion
 
         #region ExpandedContentArchetypeProcessor
@@ -409,6 +446,7 @@ namespace StarWars5e.Parser.Localization
         public string ECBlastersStartLine { get; }
         public string ECMartialLightweaponsStartLine { get; }
         public string ECMartialVibroweaponsStartLine { get; }
+        public string ECAmmunitionStartLine { get; }
         public string ECInterchangeableWeaponsSystemPattern { get; }
         public string ECStrengthRequirementPattern { get; }
         public string ECClassificationMartialBlasters { get; }
@@ -427,7 +465,7 @@ namespace StarWars5e.Parser.Localization
         public string ECClassificationLifeSupport { get; }
         public string ECClassificationMedical { get; }
         public string ECClassificationStorage { get; }
-        public string ECClassificationArtisansTools { get; }
+        public string ECClassificationArtisansImplements { get; }
         public string ECClassificationGamingSet { get; }
         public string ECClassificationMusicalInstrument { get; }
         public string ECClassificationSpecialistsKit { get; }
@@ -435,6 +473,8 @@ namespace StarWars5e.Parser.Localization
         public string ECClassificationMediumArmor{ get; }
         public string ECClassificationHeavyArmor { get; }
         public string ECClassificationShield { get; }
+        public string ECClassificationAlcoholicBeverages { get; }
+        public string ECClassificationSpices { get; }
         #endregion
 
         #region ExpandedContentForcePowersProcessor
@@ -456,6 +496,9 @@ namespace StarWars5e.Parser.Localization
         public string ECVariantRuleLightsaberFormsStartingLetter { get; }
         public string ECVariantRuleDismemberment { get; }
         public string ECVariantRuleDismembermentStartingLetter { get; }
+        public string ECVariantRuleCompoundAdvantage { get; }
+        public string ECVariantRuleCompoundAdvantageStartingLetter { get; }
+
         #endregion
 
         #region MonsterManualProcessor
@@ -488,7 +531,7 @@ namespace StarWars5e.Parser.Localization
         public string ReferenceTableNameMulticlassingPrerequisites { get; }
         public string ReferenceTableNameMulticlassingProficiencies { get; }
         public string ReferenceTableNameStarshipSizeStockCost { get; }
-        public string ReferenceTableNameStarshipSizeConstructionWorkforce { get; }
+        public string ReferenceTableNameStarshipSizeBuildingWorkforce { get; }
         public string ReferenceTableNameBaseUpgradeCostByTier{ get; }
         public string ReferenceTableNameStarshipSizeUpgradeCost { get; }
         public string ReferenceTableNameStarshipSizeUpgradeWorkforce { get; }
@@ -518,6 +561,14 @@ namespace StarWars5e.Parser.Localization
         public string ReferenceTableNameStarshipSizeMaximumSuites { get; }
         public string ReferenceTableNameStarshipSizeSuiteCapacity { get; }
         public string ReferenceTableNameCyberneticAugmentationSideEffects { get; }
+        public string ReferenceTableNameDeploymentRankPrestige { get; }
+        public string ReferenceTableNameModificationCapacityByShipSize { get; }
+        public string ReferenceTableNameModificationGradeInstallationByShipTier { get; }
+        public string ReferenceTableNameBaseHyperspaceTravelTimes { get; }
+        public string ReferenceTableNameStarshipSizeRefittingTime { get; }
+        public string ReferenceTableNameStarshipSlowedLevel { get; }
+
+
         public string ReferenceTableStartingLineAbilityScorePointCost { get; }
         public string ReferenceTableStartingLineAbilityScoresAndModifiers { get; }
         public string ReferenceTableStartingLineXPByLevel { get; }
@@ -526,7 +577,7 @@ namespace StarWars5e.Parser.Localization
         public string ReferenceTableStartingLineMulticlassingPrerequisites { get; }
         public string ReferenceTableStartingLineMulticlassingProficiencies { get; }
         public string ReferenceTableStartingLineStarshipSizeStockCost { get; }
-        public string ReferenceTableStartingLineStarshipSizeConstructionWorkforce { get; }
+        public string ReferenceTableStartingLineStarshipSizeBuildingWorkforce { get; }
         public string ReferenceTableStartingLineBaseUpgradeCostByTier { get; }
         public string ReferenceTableStartingLineStarshipSizeUpgradeCost { get; }
         public string ReferenceTableStartingLineStarshipSizeUpgradeWorkforce { get; }
@@ -556,7 +607,66 @@ namespace StarWars5e.Parser.Localization
         public string ReferenceTableStartingLineStarshipSizeMaximumSuites { get; }
         public string ReferenceTableStartingLineStarshipSizeSuiteCapacity { get; }
         public string ReferenceTableStartingLineCyberneticAugmentationSideEffects { get; }
+        public string ReferenceTableStartingLineDeploymentRankPrestige { get; }
+        public string ReferenceTableStartingLineModificationCapacityByShipSize { get; }
+        public string ReferenceTableStartingLineModificationGradeInstallationByShipTier { get; }
+        public string ReferenceTableStartingLineBaseHyperspaceTravelTimes { get; }
+        public string ReferenceTableStartingLineStarshipSizeRefittingTime { get; }
+        public string ReferenceTableStartingLineStarshipSlowedLevel { get; }
 
+
+
+        string AtWill { get; }
+        string FirstLevel { get; }
+        string SecondLevel { get; }
+        string FourthLevel { get; }
+        string FifthLevel { get; }
+        string ThirdLevel { get; }
+        string SixthLevel { get; }
+        string SeventhLevel { get; }
+        string EighthLevel { get; }
+        string NinthLevel { get; }
+        Tuple<string, int> FirstLevelNum { get; }
+        Tuple<string, int> SecondLevelNum { get; }
+        Tuple<string, int> ThirdLevelNum { get; }
+        Tuple<string, int> FourthLevelNum { get; }
+        Tuple<string, int> FifthLevelNum { get; }
+        Tuple<string, int> SixthLevelNum { get; }
+        Tuple<string, int> SeventhLevelNum { get; }
+        Tuple<string, int> EighthLevelNum { get; }
+        Tuple<string, int> NinthLevelNum { get; }
+        Tuple<string, int> TenthLevelNum { get; }
+        Tuple<string, int> EleventhLevelNum { get; }
+        Tuple<string, int> TwelfthLevelNum { get; }
+        Tuple<string, int> ThirteenthLevelNum { get; }
+        Tuple<string, int> FourteenthLevelNum { get; }
+        Tuple<string, int> FifteenthLevelNum { get; }
+        Tuple<string, int> SixteenthLevelNum { get; }
+        Tuple<string, int> SeventeenthLevelNum { get; }
+        Tuple<string, int> EighteenthLevelNum { get; }
+        Tuple<string, int> NineteenthLevelNum { get; }
+        Tuple<string, int> TwentiethLevelNum { get; }
+        Tuple<string, int> FirstNum { get; }
+        Tuple<string, int> SecondNum { get; }
+        Tuple<string, int> ThirdNum { get; }
+        Tuple<string, int> FourthNum { get; }
+        Tuple<string, int> FifthNum { get; }
+        Tuple<string, int> SixthNum { get; }
+        Tuple<string, int> SeventhNum { get; }
+        Tuple<string, int> EighthNum { get; }
+        Tuple<string, int> NinthNum { get; }
+        Tuple<string, int> TenthNum { get; }
+        Tuple<string, int> EleventhNum { get; }
+        Tuple<string, int> TwelfthNum { get; }
+        Tuple<string, int> ThirteenthNum { get; }
+        Tuple<string, int> FourteenthNum { get; }
+        Tuple<string, int> FifteenthNum { get; }
+        Tuple<string, int> SixteenthNum { get; }
+        Tuple<string, int> SeventeenthNum { get; }
+        Tuple<string, int> EighteenthNum { get; }
+        Tuple<string, int> NineteenthNum { get; }
+        Tuple<string, int> TwentiethNum { get; }
+        string ECStorageStartLine { get; }
         #endregion
     }
 }
