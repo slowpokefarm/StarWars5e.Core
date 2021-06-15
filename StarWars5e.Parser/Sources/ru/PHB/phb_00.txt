@@ -122,74 +122,78 @@ o on).
 
 Нанес ли виброклинок искателя приключений повреждения ранкору или просто отскочил от его твёрдой шкуры? Поверит ли охранник возмутительной лжи? Сможет ли персонаж переплыть бушующую реку? Сможет персонаж избежать порыва ситского *силового шторма* или получит полный урон от урагана? В случаях, когда исход действия неизвестен, <span style="font-variant: small-caps">Dungeons and Dragons</span> полагается на бросок 20-гранной кости (d20), чтобы определить успех или провал.
 
-Every character and monster in the game has capabilities defined by six **ability scores**. The abilities are Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma, and they typically range from 3 to 18 for most adventurers. (Monsters might have scores as low as 1 or as high as 30.) These ability scores, and the **ability modifiers**derived from them, are the basis for almost every d20 roll that a player makes on a character's or monster's behalf.
+Способности каждого персонажа и чудовища в игре определяются значениями шести **характеристик**. Характеристиками являются Сила, Ловкость, Телосложение, Интеллект, Мудрость и Харизма, и для большинства искателей приключений их значение варьируется от 3 до 18 (чудовища могут иметь низкие показатели, такие как 1, или высокие, такие как 30). Эти значения характеристик и выведенные из них **модификаторы характеристик** являются основой почти всех бросков d20, совершаемых игроками от лица персонажей и чудовищ.
 
-Ability checks, attack rolls, and saving throws are the three main kinds of d20 rolls, forming the core of the rules of the game. All three follow these simple steps.
+Проверки характеристик, броски атаки и спасброски являются тремя главными видами бросков d20, образующими ядро правил игры. Все три следуют этим простым шагам:
 
-**1. Roll the die and add a modifier.** Roll a d20 and add the relevant modifier. This is typically the modifier derived from one of the six ability scores, and it sometimes includes a proficiency bonus to reflect a character's particular skill. (See chapter 1 for details on each ability and how to determine an ability's modifier.)
+**1. Бросьте игральные кости и добавьте модификатор.** Бросьте d20 и добавьте соответствующий модификатор. Как правило, этот модификатор выводится из показателя одной из шести характеристик и иногда включает в себя бонус мастерства, отражающий особые умения персонажа (дополнительную информацию по всем характеристикам и определению модификаторов характеристик смотрите в главе 1).
 
-**2. Apply circumstantial bonuses and penalties.** A class feature, a power, a particular circumstance, or some other effect might give a bonus or penalty to the check.
+**2. Примените ситуационные бонусы и штрафы.** Классовые умения, способности, отдельные обстоятельства или некоторые другие эффекты могут давать бонус или накладывать штраф на проверку.
 
-**3. Compare the total to a target number.** If the total equals or exceeds the target number, the ability check, attack roll, or saving throw is a success. Otherwise, it's a failure. The GM is usually the one who determines target numbers and tells players whether their ability checks, attack rolls, and saving throws succeed or fail.
+**3. Сравните сумму с целевым числом.** Если итоговый результат равен или превосходит целевое число, проверка характеристики, бросок атаки или спасбросок будут успешными. В противном случае происходит провал. Обычно только Мастер определяет целевые числа и говорит игрокам, успешна или провалена оказалась проверка характеристики, бросок атаки или спасбросок.
 
-The target number for an ability check or a saving throw is called a **Difficulty Class** (DC). The target number for an attack roll is called an **Armor Class** (AC).
+Целевое число для проверок характеристик и спасбросков называется **Сложностью**. Целевое число для бросков атаки называется **Классом Доспеха** (КД).
 
-Chapter 7 provides more detailed rules for using the d20 in the game.
+Глава 7 предоставляет более детальные правила по использованию d20 в игре.
 
-### Advantage and Disadvantage
-Sometimes an ability check, attack roll, or saving throw is modified by special situations called **advantage**and **disadvantage**. Advantage reflects the positive circumstances surrounding a d20 roll, while disadvantage reflects the opposite. When you have either advantage or disadvantage, you roll a second d20 when you make the roll. Use the higher of the two rolls if you have advantage, and use the lower roll if you have disadvantage. For example, if you have disadvantage and roll a 17 and a 5, you use the 5. If you instead have advantage and roll those numbers, you use the 17. More detailed rules for advantage and disadvantage are presented in chapter 7. This simple rule governs the resolution of most tasks in D&D play. 
+### Преимущество и Помеха
+
+Иногда проверка характеристики, бросок атаки или спасбросок изменяются особыми ситуациями, называемыми **преимуществом** или **помехой**. Преимущество отражает положительные обстоятельства броска кубика, в то время как помехи отражают обратное. Если у вас есть преимущество либо помеха, вы бросаете второй кубика, когда совершаете бросок. Используйте наибольшее значение из двух бросков, если у вас есть преимущество, или используйте меньшее значение, если у вас помеха. Например, если у вас помеха и выпадает «17» и «5», вы используете результат «5». Если бы у вас было преимущество, ваш результат был бы равен «17».
+Более детальные правила по преимуществам и помехам представлены в главе 7.
+Это простое правило определяет решение большинства задач во время игры. 
 
 \columnbreak
 
-### Specific Beats General
-This book contains rules, especially in parts 2 and 3, that govern how the game plays. That said, many special traits, class features, powers, unique items, monster abilities, and other game elements break the general rules in some way, creating an exception to how the rest of the game works. Remember this: If a specific rule contradicts a general rule, the specific rule wins.
+### Частное Превосходит Общее
+Эта книга содержит правила, особенно в частях 2 и 3, которые определяют проведение игры. Тем не менее многие расовые особенности, классовые умения, способности, модифицированные предметы, способности монстров и другие игровые элементы местами противоречат основным правилам, создавая исключения в части игровой механики. Запомните следующее: когда частное правило противоречит общему правилу, частное правило побеждает.
 
-Exceptions to the rules are often minor. For instance, many adventurers don't have proficiency with sniper rifles, but every Chiss does because of a special trait. That trait creates a minor exception in the game. Other examples of rule-breaking are more conspicuous. For instance, an adventurer can't normally leap 30 feet, but some powers make that possible. The Force and technology account for most of the major exceptions to the rules.
+Исключения из правил часто незначительны. Например, многие искатели приключений не владеют снайперскими винтовками, но все Чиссы владеют ими благодаря особенности их вида. Эта особенность создаёт небольшое исключение в игре. Другие примеры нарушения правил более значительны. Например, искатель приключений обычно не может совершать прыжок на 30 футов, но некоторые способности делают это возможным. Сила и Технологии — источник большинства значимых исключений из правил.
 
-### Round Down
-There's one more general rule you need to know at the outset. Whenever you divide a number in the game, round down if you end up with a fraction, even if the fraction is one-half or greater, unless the feature says otherwise.
+### Округление в меньшую сторону
+Это ещё одно общее правило, которое нужно знать на начальном этапе. Всякий раз, когда вы делите число в игре, округляйте в меньшую сторону, если имеется дробный остаток. Даже если остаток равен или больше 0,5.
 
-## Adventures
-The <span style="font-variant: small-caps">Dungeons and Dragons</span> game consists of a group of characters embarking on an adventure that the Game Master presents to them. Each character brings particular capabilities to the adventure in the form of ability scores and skills, class features, special traits, equipment, and special items. Every character is different, with various strengths and weaknesses, so the best party of adventurers is one in which the characters complement each other and cover the weaknesses of their companions. The adventurers must cooperate to successfully complete the adventure.
+## Приключения
+Игра <span style="font-variant: small-caps">Dungeons and Dragons</span> заключается в том, что группа персонажей пускается в приключение, которое им представляет Мастер. Каждый персонаж привносит в приключение определённые способности в виде характеристик и навыков, классовых умений, расовых особенностей, снаряжения и особых предметов. Каждый персонаж уникален, со своими сильными и слабыми сторонами, поэтому лучший отряд искателей приключений — тот, в котором персонажи дополняют друг друга и прикрывают слабые места своих компаньонов. Авантюристы должны сотрудничать, чтобы успешно завершить приключение.
 
-The adventure is the heart of the game, a story with a beginning, a middle, and an end. An adventure might be created by the Game Master or purchased off the shelf, tweaked and modified to suit the GM's needs and desires. In either case, an adventure features a wonderous setting, whether it's an underground enclave, a crumbling temple, a stretch of wilderness, or a bustling city. It features a rich cast of characters: the adventurers created and played by the other players at the table, as well as nonplayer characters (NPCs). Those characters might be patrons, allies, enemies, hirelings, or just background extras in an adventure. Often, one of the NPCs is a villain whose agenda drives much of an adventure's action.
+Приключение — это сердце игры, история с началом, серединой и концом. Приключение может быть создано Мастером или приобретено в готовом виде, откорректировано и изменено в соответствии с потребностями и желаниями Мастера. В любом случае, приключение происходит в фантастическом окружении, будь то подземный анклав, рушащийся храм, участок дикой территории или шумный город.
+В приключении участвует множество персонажей: искатели приключений, созданные и отыгрываемые игроками за столом; а также персонажи Неигровые персонажи (NPC). Такие персонажи могут быть покровителями, союзниками, врагами, наёмниками или просто дополнительными декорациями в приключении. Часто один из NPC — злодей, чьи планы побуждают искателей приключений к действию.
 
 <div class='footnote'>INTRODUCTION</div>
 
 \pagebreakNum
 
 <div style='margin-top:23px'></div>
+В течение своих приключений персонажи сталкиваются с различными существами, объектами, и ситуациями, с которыми они должны взаимодействовать тем или иным образом. Иногда искатели приключений и другие существа делают всё возможное, чтобы убить или взять в плен друг друга в сражении. В ином случае искатели приключений разговаривают с другим существом (или даже с мистическим предметом) с определённой целью. Искатели приключений часто решают головоломки, обходят препятствия, ищут что-нибудь спрятанное или разрешают текущую ситуацию. В то же время они исследуют миры, принимают решения о том, какими дорогами путешествовать и что они станут делать дальше.
 
-Over the course of their adventures, the characters are confronted by a variety of creatures, objects, and situations that they must deal with in some way. Sometimes the adventurers and other creatures do their best to kill or capture each other in combat. At other times, the adventurers talk to another creature (or even a mystical object) with a goal in mind. And often, the adventurers spend time trying to solve a puzzle, bypass an obstacle, find something hidden, or unravel the current situation. Meanwhile, the adventurers explore the world, making decisions about which way to travel and what they'll try to do next.
+Приключения различаются по длине и сложности. Короткое приключение может представлять только несколько испытаний и занимать не более одной игровой сессии. Длинное приключение может включать сотни сражений, взаимодействий и других испытаний и занимать десятки сессий протяжённостью в несколько недель или месяцев реального времени. Как правило, приключение заканчивается тем, что герои возвращаются в безопасное место, чтобы отдохнуть и насладиться заработанной добычей.
 
-Adventures vary in length and complexity. A short adventure might present only a few challenges, and it might take no more than a single game session to complete. A long adventure can involve hundreds of combats, interactions, and other challenges, and take dozens of sessions to play through, stretching over weeks or months of real time. Usually, the end of an adventure is marked by the adventurers heading back to safety to rest and enjoy the spoils of their labors.
+Но это ещё не конец истории. Вы можете представить, что приключение — один эпизод сериала, состоящий из нескольких захватывающих сцен. Кампания — ряд серий, цепочка объединённых приключений, включающих группу искателей приключений, присутствующих в центре повествования от начала до конца.
 
-But that's not the end of the story. You can think of an adventure as a single episode of a TV series, made up of multiple exciting scenes. A campaign is the whole series—a string of adventures joined together, with a consistent group of adventurers following the narrative from start to finish.
+### Сила и Технологии
+Редкое приключение во вселенной *Звездных войн* обходится без столкновений с адептами Силы или технологий. Способности, полезные или вредоносные, часто встречаются в жизни искателя преключений. Им посвящены главы 10, 11 и 12.
 
-### The Force and Technology
-Few *Star Wars* adventures end without interacting with a force- or tech-caster. Whether helpful or harmful, powers appear frequently in the life of an adventurer, and it is the focus of chapters 10, 11, and 12.
+В мирах *Звездных войн* практикующие Силу существа - редкость, они выделяются из массы людей своим необыкновенным талантом.
 
-In the worlds of *Star Wars*, practitioners of the Force are uncommon, set apart from the masses of people by their extraordinary talent. 
+Однако для искателей приключений Сила и технологии являются ключом к выживанию. Без исцеляющего мастерства джедая или помощи хирурга авантюристы бы быстро скончались от ран. Без воодушевляющей поддержки ученого солдаты были бы сокрушены мощным натиском противника. Без мощи и гибкости консула каждая угроза была бы десятикратной.
 
-For adventurers, though, the Force and technology are key to their survival. Without the healing prowess of a Jedi or a sawbones, adventurers would quickly succumb to their wounds. Without the uplifting support of a scholar, soldiers might be overwhelmed by powerful foes. Without the sheer power and versatility of a consular, every threat would be magnified tenfold.
-
-The Force and technology are also a favored tool of villains. Many adventures are driven by the machinations of casters who are hell-bent on using power for some ill end. A mercenary leader subjugates the surrounding community, a renegade Sith saps the life from their victims, a vindictive droid takes over a space station with the intent of destroying its oppressors—these are just a few of the threats that adventurers might face. With power of their own, in the form of the Force and special items, the adventurers might prevail!
+Сила и Технологии - также любимый инструмент злодеев. Множество приключений основано на интригах маньяков, которые безрассудно используют свою мощь, пока не случится катастрофа. Лидер наемников порабощает окружающее сообщество, ситх лишает жизни своих жертв, мстительный дроид захватывает космическую станцию с намерением уничтожить своих угнетателей - это лишь некоторые из угроз, с которыми могут столкнуться искатели приключений. Обладая собственной мощью в форме Силы или особых предметов, искатели приключений могут одержать победу!
 
 \columnbreak
 
-### The Three Pillars of Adventuring 
-Adventurers can try to do anything their players can imagine, but it can be helpful to talk about their activities in three broad categories: exploration, social interaction, and combat.
+### The Three Pillars of Adventuring
+Искатели приключений могут попытаться сделать всё, что могут вообразить себе игроки, однако будет полезно свести любую деятельность в три основные категории: исследование, социальное взаимодействие и сражение.
 
-#### Exploration
-Exploration includes both the adventurers' movement through the world and their interaction with objects and situations that require their attention. Exploration is the give-and-take of the players describing what they want their characters to do, and the Game Master telling the players what happens as a result. On a large scale, that might involve the characters spending a day crossing the deserts of Tatooine or an hour making their way through the winding passages of an abandoned base. On the smallest scale, it could mean one character flipping a switch in a room to see what happens.
+#### Исследование
+Исследование включает в себя путешествия искателей приключений по миру и их взаимодействие с объектами и ситуациями, которые требуют их внимания. Исследование является двусторонним способом взаимодействия: игроки описывают, что совершают их персонажи, а Мастер рассказывает игрокам, что происходит в результате. В большом масштабе это может включать в себя то, как персонажи пересекают пустыни Татуина или пробираются в течение часа через извилистые ходы заброшенной базы. В малых масштабах исследование может означать то, как один персонаж щелкает выключателем в комнате, чтобы посмотреть, что произойдёт.
 
-#### Social Interaction
-Social interaction features the adventurers talking to someone (or something) else. It might mean demanding that a captured scout reveal the least well guarded entrance to the mercenary base, getting information from a rescued prisoner, pleading for mercy from the leader of a group of criminals, or persuading an informant to garner information about a distant location.
+#### Социальное взаимодействие
+Социальное взаимодействие описывает то, как искатели приключений общаются с кем-либо (или чем-либо). Это может быть требование, чтобы захваченный разведчик раскрыл секретный вход в логово наемников, получение информации от спасённого узника, мольба о пощаде, обращённая к лидеру группы преступников или попытка убедить информатора раскрыть информацию об отдаленном месте.
 
-The rules in chapters 7 and 8 support exploration and social interaction, as do many class features in chapter 3 and personality traits in chapter 4.
+В правилах в главах 7 и 8 есть дополнительные сведения по исследованию и социальному взаимодействию, а также вам пригодятся классовые умения в главе 3 и особенности личности из главы 4.
 
-#### Combat
-Combat, the focus of chapter 9, involves characters and other creatures swinging weapons, casting powers, maneuvering for position, and so on—all in an effort to defeat their opponents, whether that means killing every enemy, taking captives, or forcing a rout. Combat is the most structured element of a D&D session, with creatures taking turns to make sure that everyone gets a chance to act. Even in the context of a pitched battle, there's still plenty of opportunity for adventurers to attempt wacky stunts like surfing down a flight of stairs on a shield, to examine the environment (perhaps by flipping a mysterious switch), and to interact with other creatures, including allies, enemies, and neutral parties.
+
+#### Сражение
+Сражение рассматривается в главе 9, его правила затрагивают персонажей и других существ, размахивающих оружием, использующих способности, маневрирующих в попытке сокрушить своих противников вне зависимости от того, означает ли это убийство всех врагов, взятие в плен или обращение в бегство. Сражение является наиболее структурированным элементом игры, где существа ходят по очереди, чтобы каждый получил возможность действовать. Даже в пылу ожесточённого сражения у искателей приключений остаётся обилие возможностей: попытаться совершить дурацкий трюк, вроде попытки съехать вниз по лестнице на щите; исследовать окружающую обстановку (например, потянуть загадочный рычаг); начать взаимодействовать с другими существами, в том числе с союзниками, врагами и нейтральными сторонами.
 
 <div class='footnote'>INTRODUCTION</div>
 
